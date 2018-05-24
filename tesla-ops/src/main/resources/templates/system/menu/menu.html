@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+		<h1 class="page-title txt-color-blueDark">
+			<i class="fa fa-table fa-desktop"></i>
+			<span> 菜单管理 </span>
+		</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+		<div class="jarviswidget">
+			<button class="btn btn-primary" shiro:hasPermission="sys:menu:add">
+				<i class="glyphicon glyphicon-plus"></i>
+				添加菜单
+			</button>
+			&nbsp;
+			<button class="btn btn-danger" shiro:hasPermission="sys:menu:batchRemove">
+				<i class="glyphicon glyphicon-remove"></i>
+				删除菜单
+			</button>
+		</div>
+	</div>
+</div>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>菜单列表</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body no-padding">
+						<table id="menutable" class="table table-striped table-bordered table-hover">
+						</table>
+					</div>
+					<div>
+						<script type="text/javascript">
+              var s_add_h = 'hidden';
+              var s_edit_h = 'hidden';
+              var s_remove_h = 'hidden';
+            </script>
+					</div>
+					<div shiro:hasPermission="sys:menu:add">
+						<script type="text/javascript">
+              s_add_h = '';
+            </script>
+					</div>
+					<div shiro:hasPermission="sys:user:edit">
+						<script type="text/javascript">
+              s_edit_h = '';
+            </script>
+					</div>
+					<div shiro:hasPermission="sys:user:remove">
+						<script type="text/javascript">
+              s_remove_h = '';
+            </script>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/system/menu/menu.js"></script>
+

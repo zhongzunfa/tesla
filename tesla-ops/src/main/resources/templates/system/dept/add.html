@@ -1,0 +1,69 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加部门</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="deptForm" class="smart-form">
+							<input id="userId" name="userId" type="hidden">
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">上级部门：</label>
+										<label class="input">
+											<input id="parentId" name="parentId" th:value="${pId}" class="form-control hidden" type="text">
+											<input id="pName" name="pName" th:value="${pName}" type="text" readonly>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">部门名：</label>
+										<label class="input">
+											<input id="name" name="name" class="form-control" type="text">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">排序：</label>
+										<label class="input">
+											<input id="orderNum" name="orderNum" class="form-control" type="text">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">状态：</label>
+										<label class="input">
+											<input id="delFlag" name="delFlag" class="form-control" type="text">
+										</label>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/system/dept/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("sys/dept", $('#content'));
+  }
+</script>
+
+
+

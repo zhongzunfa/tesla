@@ -1,0 +1,272 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-deletebutton="false">
+				<header>
+					<h2>新建API</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body">
+						<div class="row">
+							<form id="routeForm" novalidate="novalidate" class="form-horizontal">
+								<div id="routeWizard" class="col-sm-12">
+									<div class="form-bootstrapWizard">
+										<ul class="bootstrapWizard form-wizard">
+											<li class="active" data-target="#step1">
+												<a href="#tab1" data-toggle="tab">
+													<span class="step">1</span>
+													<span class="title">基础配置</span>
+												</a>
+											</li>
+											<li data-target="#step2">
+												<a href="#tab2" data-toggle="tab">
+													<span class="step">2</span>
+													<span class="title">Spring Cloud服务发现</span>
+												</a>
+											</li>
+											<li data-target="#step3">
+												<a href="#tab3" data-toggle="tab">
+													<span class="step">3</span>
+													<span class="title">RPC 服务发现</span>
+												</a>
+											</li>
+											<li data-target="#step4">
+												<a href="#tab4" data-toggle="tab">
+													<span class="step">4</span>
+													<span class="title">gRPC参数定义</span>
+												</a>
+											</li>
+											<li data-target="#step5">
+												<a href="#tab5" data-toggle="tab">
+													<span class="step">5</span>
+													<span class="title">DUBBO参数定义</span>
+												</a>
+											</li>
+										</ul>
+										<div class="clearfix"></div>
+									</div>
+									<div class="tab-content">
+										<div class="tab-pane active" id="tab1">
+											<br>
+											<h3>
+												<strong>Step 1 </strong>
+												- 路由基本配置
+											</h3>
+											<div class="row">
+												<fieldset>
+													<div class="form-group">
+														<label class="col-md-2 control-label">API名称</label>
+														<div class="col-md-8">
+															<input class="form-control" placeholder="API的名称" type="text" name="name">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">请求路径</label>
+														<div class="col-md-8">
+															<input class="form-control" placeholder="API对外的请求路径" type="text" name="url">
+															<span class="help-block m-b-none">
+																<i class="fa fa-info-circle"></i>
+																网关对外暴露的API路径，目前只支持Rest风格，如: /user/list
+															</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">请求方法</label>
+														<div class="col-md-8">
+															<select name="httpMethod" class="form-control">
+																<option value="GET">GET</option>
+																<option value="POST">POST</option>
+																<option value="PUT">PUT</option>
+																<option value="DELETE">DELETE</option>
+																<option value="HEAD">HEAD</option>
+																<option value="PATCH">PATCH</option>
+																<option value="OPTIONS">OPTIONS</option>
+															</select>
+															<span class="help-block m-b-none">
+																<i class="fa fa-info-circle"></i>
+																Http提交方法
+															</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">所属分组</label>
+														<div class="col-md-8">
+															<select id="groupId" name="groupId" class="form-control">
+																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" />
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">路由类型</label>
+														<div class="col-md-8">
+															<select id="routeType" name="routeType" class="form-control">
+																<option th:each="apiRoute:${apiRoutes}" th:value="${apiRoute.type()}" th:text="${apiRoute.name()}" />
+															</select>
+															<span class="help-block m-b-none">
+																<i class="fa fa-info-circle"></i>
+																对应的API目标地址就是所属分组的目标地址
+															</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">目标路径</label>
+														<div class="col-md-8">
+															<input class="form-control" name="path" placeholder="API的目标路径" type="text">
+															<span class="help-block m-b-none">
+																<i class="fa fa-info-circle"></i>
+																API目标路径格式为：/所属分组目标路径/API目标路径，只对DirectRoute和SpringCloud有效
+															</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">API描述</label>
+														<div class="col-md-8">
+															<textarea class="form-control" placeholder="描述该API的详细职责" rows="4" name="describe"></textarea>
+														</div>
+													</div>
+												</fieldset>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab2">
+											<br>
+											<h3>
+												<strong>Step 2</strong>
+												- Spring Cloud服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceId">服务ID</label>
+														<div class="col-sm-6">
+															<input class="form-control" name="instanceId" type="text" placeholder="SpringCloud服务ID" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab3">
+											<br>
+											<h3>
+												<strong>Step 3</strong>
+												- RPC 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceName">服务名</label>
+														<div class="col-sm-6">
+															<input class="form-control" name="serviceName" type="text" placeholder="服务接口名" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="methodName">方法名</label>
+														<div class="col-sm-6">
+															<input class="form-control" name="methodName" type="text" placeholder="服务方法名" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceGroup">组别</label>
+														<div class="col-sm-6">
+															<input class="form-control" name="serviceGroup" type="text" placeholder="服务Group" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceVersion">版本</label>
+														<div class="col-sm-6">
+															<input class="form-control" name="serviceVersion" type="text" placeholder="服务Version" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab4">
+											<br>
+											<h3>
+												<strong>Step 4</strong>
+												- gRPC 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="zipFile">gRPC Proto定义</label>
+														<div class="col-sm-6">
+															<input type="file" class="btn btn-default form-control" name="zipFile">
+															<p class="help-block">
+																<i class="fa fa-info-circle"></i>
+																服务定义、入参、出参的.proto文件，以zip包的方式提交
+															</p>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab5">
+											<br>
+											<h3>
+												<strong>Step 5</strong>
+												- DUBBO 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12" id="grid-table-width">
+													<div class="widget-body">
+														<h3 class="alert alert-success">
+															Notice:
+															<br>
+															${header.get(**)}从header里获取数据
+															<br>
+															$(jsonObj.**)系统已把body的字符串数据转化为了JSON对象，可以使用
+															<a href="https://github.com/json-path/JsonPath">JsonPath</a>
+															来获取数据，示例为:$(jsonObj.userId)
+															<br>
+															$(jsonStr)直接获取body的JSON字符串
+															<br>
+														</h3>
+													</div>
+													<table id="grid-table"></table>
+													<input id="dubboParamTemplate" name="dubboParamTemplate" type="hidden">
+												</div>
+											</div>
+										</div>
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-sm-12">
+													<ul class="pager wizard no-margin">
+														<li class="previous disabled">
+															<a href="javascript:void(0);" class="btn btn-lg btn-default"> 上一步 </a>
+														</li>
+														<li class="next">
+															<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> 下一步 </a>
+														</li>
+														<li class="finish pull-right">
+															<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> 提交 </a>
+														</li>
+														<li class="pull-center">
+															<a href="javascript:void(0);" onclick="goback()" class="btn btn-lg txt-color-darken"> 返回 </a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/gateway/api/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("gateway/api", $('#content'));
+  }
+</script>

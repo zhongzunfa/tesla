@@ -1,0 +1,96 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>修改规则</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="ruleForm" class="smart-form">
+							<input name="id" type="hidden" th:value="${rule.id}" />
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则名称：</label>
+										<label class="input">
+											<input name="name" th:value="${rule.name}" class="form-control" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则描述：</label>
+										<label class="input">
+											<input name="describe" th:value="${rule.describe}" class="form-control" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则类型：</label>
+										<label class="input">
+											<input name="filterType" id="filterType" th:value="${rule.filterType}" class="form-control" type="text" readonly="true" />
+										</label>
+									</section>
+								</div>
+								<div class="row" th:if="${rule.group!=null}">
+									<section class="col col-10">
+										<label class="label">归属API分组：</label>
+										<label class="input">
+											<input th:value="${rule.group.name}" class="form-control" type="text" readonly />
+											<input name="group.id" th:value="${rule.group.id}" class="form-control" type="hidden" />
+										</label>
+									</section>
+								</div>
+								<div class="row" th:if="${rule.api!=null}">
+									<section class="col col-10">
+										<label class="label">归属API：</label>
+										<label class="input">
+											<input th:value="${rule.api.url}" class="form-control" type="text" readonly />
+											<input name="api.id" th:value="${rule.api.id}" class="form-control" type="hidden" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则正则表达式内容：</label>
+										<label class="textarea textarea-resizable">
+											<textarea rows="50" class="custom-scroll rule" th:field="${rule.rule}"></textarea>
+											<input id="rule" name="rule" class="form-control" type="hidden" />
+										</label>
+										<div class="widget-body">
+												<h3 class="alert alert-success">
+													Notice:<br>
+													1):${header.get(**)}从header里获取数据<br>
+													2):<a href="https://github.com/json-path/JsonPath">JsonPath</a>
+													用法：<br>
+													  &nbsp;&nbsp; A: 利用JsonPath把Body字符串解析为Json对象放在FreeMaker上下文中<br>
+													  &nbsp;&nbsp;&nbsp;&nbsp;<code><#assign json=input.path( "$")></code><br>
+													  &nbsp;&nbsp; B: 利用JsonPath表达式抽取数据<br>
+													  &nbsp;&nbsp;&nbsp;&nbsp;<code>$(json.***)</code><br>
+												</h3>
+											</div>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" id="submit_urlparam" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/gateway/bizrule/edit.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("filter/bizrule", $('#content'));
+  }
+</script>

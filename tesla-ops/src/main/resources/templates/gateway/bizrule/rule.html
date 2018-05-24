@@ -1,0 +1,63 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+		<h1 class="page-title txt-color-blueDark">
+			<i class="fa fa-table fa-desktop"></i>
+			<span> 路由规则管理</span>
+		</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+		<div class="jarviswidget">
+			<button shiro:hasPermission="filter:rule:add" type="button" class="btn  btn-primary" onclick="add()">
+				<i class="glyphicon glyphicon-plus"></i>
+				添加
+			</button>
+			&nbsp;
+			<button shiro:hasPermission="filter:rule:batchRemove" type="button" class="btn  btn-danger" onclick="batchRemove()">
+				<i class="glyphicon glyphicon-remove"></i>
+				删除
+			</button>
+		</div>
+	</div>
+</div>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>路由规则列表</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body no-padding">
+						<table id="ruleTable" class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
+						</table>
+					</div>
+					<div>
+						<script type="text/javascript">
+			              var s_edit_h = 'hidden';
+			              var s_remove_h = 'hidden';
+			            </script>
+					</div>
+					<div shiro:hasPermission="filter:rule:edit">
+						<script type="text/javascript">
+			              s_edit_h = '';
+			            </script>
+					</div>
+					<div shiro:hasPermission="filter:rule:remove">
+						<script type="text/javascript">
+			              var s_remove_h = '';
+			            </script>
+					</div>
+
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<div id="dialog"></div>
+<script type="text/javascript" src="/js/appjs/gateway/bizrule/rule.js"></script>

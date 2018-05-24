@@ -1,0 +1,94 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>系统菜单</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="menuform" class="smart-form">
+							<input id="parentId" name="parentId" type="hidden" th:value="${pId}" />
+							<input id="menuId" name="menuId" type="hidden" th:value="${menu.menuId}" />
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">上级菜单：</label>
+										<label class="input">
+											<input class="form-control" type="text" th:value="${pName}" readonly>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">菜单类型：</label>
+										<label class="select">
+											<select name="type" class="valid" th:field="*{menu.type}">
+												<option value="0">目录</option>
+												<option value="1">菜单</option>
+												<option value="2">按钮</option>
+											</select>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">菜单名称：</label>
+										<label class="input">
+											<input name="name" class="form-control" type="text" th:value="${menu.name}">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">链接地址：</label>
+										<label class="input">
+											<input name="url" class="form-control" type="text" th:value="${menu.url}">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">权限标识：</label>
+										<label class="input">
+											<input id="perms" name="perms" class="form-control" type="text" th:value="${menu.perms}">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">排序号：</label>
+										<label class="input">
+											<input id="orderNum" name="orderNum" class="form-control" type="text" th:value="${menu.orderNum}">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">图标：</label>
+										<label class="input">
+											<input name="icon" class="form-control" type="text" th:value="${menu.icon}">
+										</label>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/system/menu/add.js"></script>
+<script type="text/javascript">
+   function goback(){
+	   loadURL("sys/menu", $('#content'));
+   }
+</script>

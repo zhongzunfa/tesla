@@ -1,0 +1,141 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加客户端</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="oauth2Form" class="smart-form">
+							<input id="userId" name="userId" type="hidden">
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientId：</label>
+										<label class="input">
+											<input class="form-control" id="clientId" name="clientId" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientName：</label>
+										<label class="input">
+											<input class="form-control" id="fromPath" name="name" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientSecret：</label>
+										<label class="input">
+											<input class="form-control" id="clientSecret" name="clientSecret" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Redirect URL：</label>
+										<label class="input">
+											<input class="form-control" id="redirectUri" name="redirectUri" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Scope：</label>
+										<div class="inline-group">
+											<label class="checkbox">
+												<input type="checkbox" name="scope" value="read">
+												<i></i>
+												Read
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="scope" value="write">
+												<i></i>
+												Write
+											</label>
+										</div>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">GrantTypes：</label>
+										<div class="inline-group">
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="authorization_code">
+												<i></i>
+												授权码
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="password">
+												<i></i>
+												密码
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="refresh_token">
+												<i></i>
+												刷新Token
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="implicit">
+												<i></i>
+												简化模式
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="client_credentials">
+												<i></i>
+												客户端
+											</label>
+										</div>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">AccessToken Effective：</label>
+										<label class="input">
+											<input class="form-control" id="accessTokenValidity" name="accessTokenValidity" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">RefreshToken Effective：</label>
+										<label class="input">
+											<input id="refreshTokenValidity" name="refreshTokenValidity" class="form-control" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Trusted：</label>
+										<label class="input">
+											<select id="trusted" name="trusted" class="form-control">
+												<option value="0">否</option>
+												<option value="1">是</option>
+											</select>
+										</label>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/oauth2/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("sys/oauth2/client", $('#content'));
+  }
+</script>

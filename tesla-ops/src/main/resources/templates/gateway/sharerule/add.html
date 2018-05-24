@@ -1,0 +1,265 @@
+<style>
+@charset "utf-8";
+
+#certify {
+	position: relative;
+	width: 100%;
+	margin: 0 auto
+}
+
+#certify .swiper-container {
+	padding-top: 10px;
+	padding-bottom: 60px;
+}
+
+#certify  .swiper-slide {
+	width: 300px;
+	height: 200px;
+	background: #fff;
+	box-shadow: 0 8px 30px #ddd;
+}
+
+#certify .swiper-pagination {
+	width: 100%;
+	bottom: 20px;
+}
+
+#certify .swiper-pagination-bullets .swiper-pagination-bullet {
+	margin: 0 5px;
+	border: 3px solid #fff;
+	background-color: #d5d5d5;
+	width: 10px;
+	height: 10px;
+	opacity: 1;
+}
+
+#certify .swiper-pagination-bullets .swiper-pagination-bullet-active {
+	border: 3px solid #00aadc;
+	background-color: #fff;
+}
+
+#certify .swiper-button-prev {
+	width: 45px;
+	height: 45px;
+	background: url(/img/wm_button_icon.png) no-repeat;
+	background-position: 0 0;
+	background-size: 100%;
+}
+
+#certify .swiper-button-prev:hover {
+	background-position: 0 -46px;
+	background-size: 100%
+}
+
+#certify .swiper-button-next {
+	width: 45px;
+	height: 45px;
+	background: url(/img/wm_button_icon.png) no-repeat;
+	background-position: 0 -93px;
+	background-size: 100%;
+}
+
+#certify .swiper-button-next:hover {
+	background-position: 0 -139px;
+	background-size: 100%
+}
+</style>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加通用组件规则</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div id="certify">
+									<div class="swiper-container">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">URL参数黑名单</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对URL某一些参数进行限制，如果带有这些参数将限制使用，一般用于拖库等场景
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="URLParamHttpRequestFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">Cookie黑名单</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对一些包含一些特殊的Cookie进行限制，如果带有这些Cookie将限制使用
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="BlackCookieHttpRequestFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">UA黑名单</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对一些特殊用户进行限制，包含改UA信息进行限制
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="BlackUaHttpRequestFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">URL黑名单</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对一些特殊的URL进行限制
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="BlackURLHttpRequestFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">IP黑名单</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对一些特殊IP进行限制，用于防止机器人爬虫爬数据的场景比较多
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="BlackIpHttpRequesFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">工具软件防爬</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li>
+																	<i class="fa fa-check text-success"></i>
+																	用于对第三方安全工具来调用网站，该种网站严格进行控制
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="SecurityScannerHttpRequestFilter" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="swiper-pagination"></div>
+									<div class="swiper-button-prev"></div>
+									<div class="swiper-button-next"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<form class="smart-form" id="ruleForm">
+									<header> 通用组件规则设置 </header>
+									<fieldset>
+										<section>
+											<label class="label">名称</label>
+											<label class="input">
+												<input type="text" name="name" class="input-xs">
+											</label>
+										</section>
+										<section>
+											<label class="label">描述</label>
+											<label class="input">
+												<input type="text" name="describe" class="input-xs">
+											</label>
+										</section>
+										<section>
+											<label class="label">组件类型</label>
+											<label class="input">
+												<input type="text" id="filterType" name="filterType" class="input-xs" readonly>
+											</label>
+										</section>
+										<section>
+											<label class="label">详细正则表达式</label>
+											<label class="textarea textarea-resizable">
+												<input id="rule" name="rule" class="form-control" type="hidden">
+												<textarea rows="20" class="custom-scroll"></textarea>
+											</label>
+											<div class="note">
+												<strong>Note:</strong>
+												用正则表达式来限制，换行符来分割
+											</div>
+										</section>
+									</fieldset>
+									<footer>
+										<button type="button" class="btn btn-default" onclick="goback()">返回</button>
+										<button type="submit" class="btn btn-primary">提交</button>
+									</footer>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/gateway/sharerule/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("filter/sharerule", $('#content'));
+  }
+</script>

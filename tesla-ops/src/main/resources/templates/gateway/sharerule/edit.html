@@ -1,0 +1,70 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>修改规则</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="ruleForm" class="smart-form">
+							<input name="id" type="hidden" th:value="${rule.id}" />
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则名称：</label>
+										<label class="input">
+											<input name="name" th:value="${rule.name}" class="form-control" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则描述：</label>
+										<label class="input">
+											<input name="describe" th:value="${rule.describe}" class="form-control" type="text" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则类型：</label>
+										<label class="input">
+											<input name="filterType" th:value="${rule.filterType}" class="form-control" type="text" readonly="true" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">规则正则表达式内容：</label>
+										<label class="textarea textarea-resizable">
+											<textarea rows="15" class="custom-scroll rule" placeholder="URL参数黑名单正则表达式" th:field="${rule.rule}"></textarea>
+											<input id="rule" name="rule" class="form-control" type="hidden" />
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												每一条规则需要以换行符分割，文本支持换行符
+											</span>
+										</label>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" id="submit_urlparam" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/gateway/sharerule/edit.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("filter/sharerule", $('#content'));
+  }
+</script>

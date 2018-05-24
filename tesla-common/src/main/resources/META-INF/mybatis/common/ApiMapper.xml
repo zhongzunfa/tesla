@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.tesla.common.dao.ApiDao">
+	<resultMap type="io.github.tesla.common.domain.ApiDO" id="apiResultMap"
+		autoMapping="true">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="describe" property="describe" />
+		<result column="url" property="url" />
+		<result column="path" property="path" />
+		<result column="routes" property="routes" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<association property="apiGroup"
+			select="io.github.tesla.common.dao.ApiGroupDao.get" column="group_id"
+			javaType="io.github.tesla.common.domain.ApiGroupDO" autoMapping="true">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="describe" property="describe" />
+			<result column="backend_path" property="backendPath" />
+			<result column="backend_host" property="backendHost" />
+			<result column="backend_port" property="backendPort" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modified" property="gmtModified" />
+		</association>
+	</resultMap>
+
+	<select id="get" resultMap="apiResultMap">
+		select
+		`id`,`name`,`describe`,`url`,`http_method`,`path`,`routes`,`gmt_create`,`gmt_modified`,`group_id`
+		from gateway_api
+		where
+		id = #{value}
+	</select>
+
+	<select id="list" resultMap="apiResultMap">
+		select
+		`id`,`name`,`describe`,`url`,`http_method`,`path`,`routes`,`gmt_create`,`gmt_modified`,`group_id`
+		from gateway_api
+		<where>
+			<if test="id != null and id != ''"> and `id` = #{id} </if>
+			<if test="name != null and name != ''"> and `name` = #{name} </if>
+			<if test="url != null and url != ''"> and `url` = #{url} </if>
+			<if test="httpMethod != null and httpMethod != ''"> and `http_method` = #{httpMethod} </if>
+			<if test="path != null and path != ''"> and `path` = #{path} </if>
+			<if test="routes != null and routes != ''"> and `routes` = #{routes} </if>
+			<if test="groupId != null and groupId != ''"> and `group_id` = #{groupId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from gateway_api
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
+			<if test="path != null and path != ''"> and path = #{path} </if>
+			<if test="routes != null and routes != ''"> and routes = #{routes} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="io.github.tesla.common.domain.ApiDO"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="java.lang.Long" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into gateway_api
+		(
+		`name`,
+		`describe`,
+		`url`,
+		`http_method`,
+		`path`,
+		`routes`,
+		`gmt_create`,
+		`gmt_modified`,
+		`group_id`
+		)
+		values
+		(
+		#{name},
+		#{describe},
+		#{url},
+		#{httpMethod},
+		#{path},
+		#{routes},
+		sysdate(),
+		sysdate(),
+		#{apiGroup.id}
+		)
+	</insert>
+
+	<update id="update" parameterType="io.github.tesla.common.domain.ApiDO">
+		update gateway_api
+		<set>
+			<if test="name != null and name != ''"> `name` = #{name} ,</if>
+			<if test="describe != null and describe != ''"> `describe` = #{describe}, </if>
+			<if test="url != null and url != ''"> `url` = #{url}, </if>
+			<if test="httpMethod != null and httpMethod != ''"> `http_method` = #{httpMethod}, </if>
+			<if test="path != null and path != ''"> `path` = #{path} ,</if>
+			<if test="routes != null and routes != ''"> `routes` = #{routes} ,</if>
+			<if test="apiGroup != null"> `group_id` = #{apiGroup.id}, </if>
+			`gmt_modified`=sysdate()
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from gateway_api where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from gateway_api where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

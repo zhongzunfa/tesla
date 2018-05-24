@@ -1,0 +1,94 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加API分组</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="apigroupForm" class="smart-form">
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">分组名称：</label>
+										<label class="input">
+											<input id="name" name="name" class="form-control" type="text">
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												分组名称必须唯一，用英文标识
+											</span>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">后端服务地址：</label>
+										<label class="input">
+											<input id="backendHost" name="backendHost" class="form-control" type="text">
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												IP或者域名，对直接路由起效，当API为直接路由时，请求将路由到该地址
+											</span>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">后端服务端口：</label>
+										<label class="input">
+											<input id="backendPort" name="backendPort" class="form-control" type="text">
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												后端服务端口地址，对直接路由起效，当API为直接路由时，请求将路由到该端口
+											</span>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">分组服务通用URL前缀：</label>
+										<label class="input">
+											<input id="backendPath" name="backendPath" class="form-control" type="text">
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												后端服务URL前缀，对直接路由和SpringCloud生效，当API请求到网关时，会将所有的路由到后端服务的URL加上通用的前缀;
+												<br>
+												如：API地址为：/userinfo 前缀为:/user 则最终组合成为的地址为: /user/userinfo
+											</span>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">分组描述：</label>
+										<label class="textarea">
+											<textarea class="form-control" placeholder="描述该API分组的详细职责" rows="4" name="describe"></textarea>
+											<span class="help-block m-b-none">
+												<i class="fa fa-info-circle"></i>
+												详细描述改分组的职责
+											</span>
+										</label>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/gateway/apigroup/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("gateway/apigroup", $('#content'));
+  }
+</script>

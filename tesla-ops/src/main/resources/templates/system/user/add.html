@@ -1,0 +1,96 @@
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加用户</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="userForm" class="smart-form">
+							<input id="userId" name="userId" type="hidden">
+							<fieldset>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">姓名：</label>
+										<label class="input">
+											<input id="name" name="name" type="text">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">用户名：</label>
+										<label class="input">
+											<input id="username" name="username" type="text">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">密码：</label>
+										<label class="input">
+											<input id="password" name="password" type="password">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">部门：</label>
+										<label class="input">
+											<input id="deptId" name="deptId" class="hidden">
+											<input id="deptName" name="deptName" type="text" style="cursor: pointer;" onclick="openDept()" readonly="readonly" placeholder="所属部门">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">E-mail：</label>
+										<label class="input">
+											<input id="email" name="email" type="email">
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">状态:</label>
+										<label class="select">
+											<select name="status" class="valid">
+												<option value="0">正常</option>
+												<option value="1">禁用</option>
+											</select>
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">角色：</label>
+										<div class="inline-group">
+											<label th:each="role:${roles}" class="checkbox">
+												<input name="checkbox-inline" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}">
+												<i></i>
+											</label>
+										</div>
+									</section>
+								</div>
+							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</section>
+<script type="text/javascript" src="/js/appjs/system/user/add.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("sys/user", $('#content'));
+  }
+</script>

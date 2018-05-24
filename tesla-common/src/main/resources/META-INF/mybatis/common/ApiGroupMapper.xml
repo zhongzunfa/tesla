@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.tesla.common.dao.ApiGroupDao">
+
+	<select id="get" parameterType="long"
+		resultType="io.github.tesla.common.domain.ApiGroupDO">
+		select
+		`id`,`name`,`describe`,`backend_host`,`backend_port`,`backend_path`,`gmt_create`,`gmt_modified`
+		from gateway_api_group
+		where id = #{value}
+	</select>
+
+	<select id="list" resultType="io.github.tesla.common.domain.ApiGroupDO">
+		select
+		`id`,`name`,`describe`,`backend_host`,`backend_port`,`backend_path`,`gmt_create`,`gmt_modified`
+		from gateway_api_group
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="describe != null and describe != ''"> and describe = #{describe} </if>
+			<if test="backendHost != null and backendHost != ''"> and backend_host = #{backendHost} </if>
+			<if test="backendPort != null and backendPort != ''"> and backend_port = #{backendPort} </if>
+			<if test="backendPath != null and backendPath != ''"> and backend_path = #{backendPath} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from gateway_api_group
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="describe != null and describe != ''"> and describe = #{describe} </if>
+			<if test="backendHost != null and backendHost != ''"> and backend_host = #{backendHost} </if>
+			<if test="backendPort != null and backendPort != ''"> and backend_port = #{backendPort} </if>
+			<if test="backendPath != null and backendPath != ''"> and backend_path = #{backendPath} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="io.github.tesla.common.domain.ApiGroupDO"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="java.lang.Long" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into gateway_api_group
+		(
+		`name`,
+		`describe`,
+		`backend_host`,
+		`backend_port`,
+		`backend_path`,
+		`gmt_create`,
+		`gmt_modified`
+		)
+		values
+		(
+		#{name},
+		#{describe},
+		#{backendHost},
+		#{backendPort},
+		#{backendPath},
+		sysdate(),
+		sysdate()
+		)
+	</insert>
+
+	<update id="update" parameterType="io.github.tesla.common.domain.ApiGroupDO">
+		update gateway_api_group
+		<set>
+			<if test="name != null and name != ''"> `name` = #{name} ,</if>
+			<if test="describe != null and describe != ''"> `describe` = #{describe} ,</if>
+			<if test="backendHost != null and backendHost != ''"> `backend_host` = #{backendHost}, </if>
+			<if test="backendPort != null and backendPort != ''"> `backend_port` = #{backendPort}, </if>
+			<if test="backendPath != null and backendPath != ''"> `backend_path` = #{backendPath}, </if>
+			`gmt_modified`=sysdate()
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from gateway_api_group where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from gateway_api_group where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

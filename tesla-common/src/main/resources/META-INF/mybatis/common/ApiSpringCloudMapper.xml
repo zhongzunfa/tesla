@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.tesla.common.dao.ApiSpringCloudDao">
+
+	<select id="get" resultType="io.github.tesla.common.domain.ApiSpringCloudDO">
+		select
+		`id`,`instance_id`,`api_id`,`gmt_create`,`gmt_modified`
+		from
+		gateway_api_springcloud
+		where api_id = #{apiId}
+	</select>
+
+	<select id="list" resultType="io.github.tesla.common.domain.ApiSpringCloudDO">
+		select
+		`id`,`instance_id`,`api_id`,`gmt_create`,`gmt_modified`
+		from
+		gateway_api_springcloud
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="api != null"> and api_id = #{api.id} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<insert id="save" parameterType="io.github.tesla.common.domain.ApiSpringCloudDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into gateway_api_springcloud
+		(
+		`instance_id`,
+		`api_id`,
+		`gmt_create`,
+		`gmt_modified`
+		)
+		values
+		(
+		#{instanceId},
+		#{api.id},
+		sysdate(),
+		sysdate()
+		)
+	</insert>
+
+	<update id="update" parameterType="io.github.tesla.common.domain.ApiSpringCloudDO">
+		update gateway_api_springcloud
+		<set>
+			<if test="instanceId != null"> `instance_id` = #{instanceId},</if>
+			<if test="api_id != null"> `api_id` = #{api.id},</if>
+			`gmt_modified`=sysdate()
+		</set>
+		where api_id = #{api.id}
+	</update>
+
+	<delete id="remove">
+		delete from gateway_api_springcloud where api_id =
+		#{apiId}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from gateway_api_springcloud where api_id in
+		<foreach item="apiId" collection="array" open="(" separator=","
+			close=")">
+			#{apiId}
+		</foreach>
+	</delete>
+</mapper>
