@@ -15,9 +15,9 @@ package io.github.tesla.gateway.netty.filter.request;
 
 import io.github.tesla.common.RequestFilterTypeEnum;
 import io.github.tesla.common.domain.ApiRpcDO;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.protocol.grpc.DynamicGrpcClient;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;

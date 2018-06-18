@@ -45,9 +45,9 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import io.github.tesla.common.domain.ApiRpcDO;
-import io.github.tesla.gateway.netty.filter.help.BodyMapping;
-import io.github.tesla.gateway.netty.filter.help.HeaderMapping;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
+import io.github.tesla.gateway.filter.BodyMapping;
+import io.github.tesla.gateway.filter.HeaderMapping;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.protocol.MicroserviceDynamicClient;
 
 /**

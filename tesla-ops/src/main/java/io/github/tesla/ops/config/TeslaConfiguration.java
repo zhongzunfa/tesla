@@ -14,20 +14,13 @@
 package io.github.tesla.ops.config;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
@@ -53,21 +46,21 @@ import com.google.common.collect.Lists;
 @Configuration
 public class TeslaConfiguration {
 
-  @Configuration
-  @AutoConfigureAfter(FlywayAutoConfiguration.class)
-  protected class FlywayConfigure {
-
-    @Autowired
-    private Flyway flyway;
-
-    @PostConstruct
-    public void init() {
-      List<String> locations =
-          new ArrayList<String>(Collections.singletonList("META-INF/config/sql"));
-      flyway.setLocations(locations.toArray(new String[0]));
-      flyway.setPlaceholderReplacement(false);
-    }
-  }
+  // @Configuration
+  // @AutoConfigureAfter(FlywayAutoConfiguration.class)
+  // protected class FlywayConfigure {
+  //
+  // @Autowired
+  // private Flyway flyway;
+  //
+  // @PostConstruct
+  // public void init() {
+  // List<String> locations =
+  // new ArrayList<String>(Collections.singletonList("META-INF/config/sql"));
+  // flyway.setLocations(locations.toArray(new String[0]));
+  // flyway.setPlaceholderReplacement(false);
+  // }
+  // }
 
   @Configuration
   @EnableCaching

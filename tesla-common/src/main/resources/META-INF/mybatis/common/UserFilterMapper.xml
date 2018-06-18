@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.tesla.common.dao.UserFilterDao">
+
+
+
+	<select id="loadByFilterIdAndClassName" resultType="io.github.tesla.common.domain.UserFilterDO">
+		select
+		`id`,`filter_class`,`rule`,`filter_id`,`gmt_create`,`gmt_modified`
+		from gateway_user_filter
+		where `filter_class` = #{filterClass} AND
+		`filter_id` = #{filterId}
+	</select>
+
+	<insert id="save" parameterType="io.github.tesla.common.domain.UserFilterDO"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="java.lang.Long" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `gateway_user_filter` (
+		`filter_class`,
+		`rule`,
+		`filter_id`,
+		`gmt_create`,
+		`gmt_modified`)
+		values
+		(
+		#{filterClass},
+		#{rule},
+		#{filterId},
+		sysdate(),
+		sysdate()
+		)
+	</insert>
+
+	<delete id="removeByFilterId">
+		delete from gateway_user_filter where `filter_id` =
+		#{filterId}
+	</delete>
+
+</mapper>

@@ -14,7 +14,6 @@
 package io.github.tesla.gateway;
 
 import java.io.IOException;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +22,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-
+import io.github.tesla.gateway.metrics.MetricsHttpServer;
 import io.github.tesla.gateway.netty.HttpFiltersSourceAdapter;
 import io.github.tesla.gateway.netty.HttpProxyServer;
-import io.prometheus.client.exporter.HTTPServer;
 import io.prometheus.client.hotspot.DefaultExports;
 
 /**
@@ -65,7 +63,7 @@ public class TeslaGateWayApplication implements CommandLineRunner {
     final int metricePort = httpPort + 1;
     DefaultExports.initialize();
     try {
-      new HTTPServer(metricePort, true);
+      new MetricsHttpServer(metricePort, true);
     } catch (IOException e) {
       e.printStackTrace();
     }

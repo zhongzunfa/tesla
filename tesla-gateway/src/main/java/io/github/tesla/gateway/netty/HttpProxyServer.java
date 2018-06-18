@@ -14,11 +14,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.metrics.MetricsExporter;
 import io.github.tesla.gateway.netty.transmit.connection.ClientToProxyConnection;
 import io.github.tesla.gateway.netty.transmit.support.HostResolver;
 import io.github.tesla.gateway.netty.transmit.support.ServerGroup;
-import io.github.tesla.gateway.utils.ProxyUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFactory;

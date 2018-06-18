@@ -13,6 +13,7 @@
  */
 package io.github.tesla.gateway.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -76,14 +77,18 @@ public class GateWayProxyConfig {
     @Bean
     protected ApplicationConfig dubboApplicationConfig() {
       ApplicationConfig appConfig = new ApplicationConfig();
-      appConfig.setName("gateway_proxy");
+      appConfig.setName(applicationName);
       return appConfig;
     }
 
     @Bean
     protected RegistryConfig dubboRegistryConfig() {
       RegistryConfig registryConfig = new RegistryConfig();
-      registryConfig.setAddress(registry);
+      if (StringUtils.startsWith(registry, "zookeeper")) {
+        registryConfig.setAddress(registry);
+      } else {
+        registryConfig.setAddress("zookeeper://" + registry);
+      }
       registryConfig.setClient("curator");
       return registryConfig;
     }

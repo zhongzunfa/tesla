@@ -16,8 +16,6 @@ package io.github.tesla.common.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import io.github.tesla.common.RequestFilterTypeEnum;
-
 /**
  * @author liushiming
  * @version FilterRule.java, v 0.0.1 2018年2月11日 下午2:00:13 liushiming
@@ -32,7 +30,9 @@ public class FilterDO implements Serializable {
 
   private String describe;
 
-  private RequestFilterTypeEnum filterType;
+  private String inOrOut;
+
+  private String filterType;
 
   private String rule;
 
@@ -61,22 +61,12 @@ public class FilterDO implements Serializable {
     this.describe = describe;
   }
 
-  public RequestFilterTypeEnum getFilterType() {
+  public String getFilterType() {
     return filterType;
   }
 
-  public void setFilterType(RequestFilterTypeEnum filterType) {
-    this.filterType = filterType;
-  }
-
   public void setFilterType(String filterType) {
-    RequestFilterTypeEnum type = RequestFilterTypeEnum.fromTypeName(filterType);
-    if (type != null) {
-      this.filterType = type;
-    } else {
-      throw new java.lang.IllegalArgumentException(
-          "no type found in defination,[" + filterType + "]");
-    }
+    this.filterType = filterType;
   }
 
   public String getRule() {
@@ -125,6 +115,14 @@ public class FilterDO implements Serializable {
 
   public void setGmtModified(Timestamp gmtModified) {
     this.gmtModified = gmtModified;
+  }
+
+  public String getInOrOut() {
+    return inOrOut;
+  }
+
+  public void setInOrOut(String inOrOut) {
+    this.inOrOut = inOrOut;
   }
 
   @Override

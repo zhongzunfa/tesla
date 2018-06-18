@@ -1,8 +1,8 @@
 package io.github.tesla.gateway.netty.filter.drools
 
-import io.github.tesla.gateway.netty.filter.help.BodyMapping
-import io.github.tesla.gateway.netty.filter.help.HeaderMapping
-import io.github.tesla.gateway.netty.filter.help.DroolsContext
+import com.bkjk.gateway.filter.help.BodyMapping
+import com.bkjk.gateway.filter.help.HeaderMapping
+import com.bkjk.gateway.filter.help.DroolsContext
 
 
 declare User

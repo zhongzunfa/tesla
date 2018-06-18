@@ -15,6 +15,7 @@ import javax.net.ssl.SSLProtocolException;
 
 import com.google.common.net.HostAndPort;
 
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.netty.ActivityTracker;
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
 import io.github.tesla.gateway.netty.HttpProxyServer;
@@ -22,7 +23,6 @@ import io.github.tesla.gateway.netty.transmit.ConnectionState;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlow;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlowStep;
 import io.github.tesla.gateway.netty.transmit.flow.FullFlowContext;
-import io.github.tesla.gateway.utils.ProxyUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;

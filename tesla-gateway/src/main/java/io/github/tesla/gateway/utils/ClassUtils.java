@@ -36,8 +36,21 @@ public final class ClassUtils {
 
   private static Logger log = LoggerFactory.getLogger(ClassUtils.class);
 
+  public static Class<?> getClass(String className) {
+    try {
+      ClassLoader loader = org.springframework.util.ClassUtils.getDefaultClassLoader();
+      return org.springframework.util.ClassUtils.forName(className, loader);
+    } catch (LinkageError | ClassNotFoundException e) {
+      log.error("Ignoring candidate class resource " + className + " due to " + e);
+      return null;
+    } catch (Throwable e) {
+      log.error("Unexpected failure when loading class resource " + className, e);
+      return null;
+    }
+  }
+
   public static Set<Class<?>> findAllClasses(String scanPackages) {
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    ClassLoader loader = org.springframework.util.ClassUtils.getDefaultClassLoader();
     Resource[] resources = new Resource[0];
     try {
       resources = scan(loader, scanPackages);

@@ -28,7 +28,7 @@ import com.googlecode.protobuf.format.JsonFormat;
 import io.github.saluki.grpc.exception.RpcFrameworkException;
 import io.github.saluki.grpc.exception.RpcServiceException;
 import io.github.tesla.common.domain.ApiRpcDO;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.protocol.MicroserviceDynamicClient;
 import io.grpc.MethodDescriptor;
 import io.grpc.MethodDescriptor.Marshaller;

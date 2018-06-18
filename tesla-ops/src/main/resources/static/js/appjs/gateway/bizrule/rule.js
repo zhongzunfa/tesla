@@ -30,7 +30,7 @@ function load() {
       title: '名称'
     }, {
       field: 'api',
-      title: '所属API',
+      title: 'API',
       formatter: function(value, row, index) {
         if (value != null) {
           return value.url;
@@ -40,7 +40,8 @@ function load() {
       }
     }, {
       field: 'group',
-      title: '所属API分组',
+      title: 'Group',
+      width: 60,
       formatter: function(value, row, index) {
         if (value != null) {
           return value.name;
@@ -51,6 +52,7 @@ function load() {
     }, {
       field: 'rule',
       title: '规则',
+      width: 50,
       formatter: function(value, row, index) {
         return `<a href="javascript:void(0);" onclick="view('${row.id}')"><strong>详情</strong></a>`;
       }
@@ -59,20 +61,21 @@ function load() {
       title: '描述'
     }, {
       field: 'filterName',
-      title: '类型'
-    },{
-      field: 'filterOrder',
-      title: '执行顺序'
+      title: '类型',
+      width: 95
     }, {
       field: 'gmtCreate',
-      title: '创建时间'
+      title: '创建时间',
+      width: 140
     }, {
       field: 'gmtModified',
-      title: '更新时间'
+      title: '更新时间',
+      width: 140
     }, {
       title: '操作',
       field: 'id',
       align: 'center',
+      width: 95,
       formatter: function(value, row, index) {
         var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + row.id + '\')"><i class="fa fa-edit"></i></a> ';
         var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="javascript:void(0)" title="删除"  mce_href="#" onclick="remove(\'' + row.id + '\')"><i class="fa fa-remove"></i></a> ';
@@ -86,7 +89,11 @@ function load() {
 }
 function view(id) {
   var row = $('#ruleTable').bootstrapTable('getRowByUniqueId', id);
-  $('#dialog').html('<textarea class="rule" rows="100" style="width: 100%">' + row.rule + "</textarea>")
+  $('#dialog').html('');
+  $('#ruleTables').tmpl({
+    userFilters: row.userFilter
+  }).appendTo('#dialog');
+  $('.nav-tabs').find('a:last').tab('show');
   $('#dialog').dialog({
     width: 900,
     height: 600,
@@ -100,22 +107,18 @@ function view(id) {
       }
     }],
     open: function(event, ui) {
-      if (row.filterType == 'DataMappingRequestFilter') {
-        $('.rule').ace({
-          theme: 'idle_fingers',
-          lang: 'freemarker'
-        })
-      } else if (row.filterType == 'DroolsRequestFilter') {
-        $('.rule').ace({
-          theme: 'idle_fingers',
-          lang: 'drools'
-        })
-      } else {
-        $('.rule').ace({
-          theme: 'idle_fingers',
-          lang: 'text'
-        })
-      }
+      $('#' + 'DataMappingRequestFilter').ace({
+        theme: 'idle_fingers',
+        lang: 'freemarker'
+      });
+      $('#' + 'DataMappingHttpResponseFilter').ace({
+        theme: 'idle_fingers',
+        lang: 'freemarker'
+      });
+      $('#' + 'DroolsRequestFilter').ace({
+        theme: 'idle_fingers',
+        lang: 'drools'
+      })
     }
   }).dialog('open');
 }

@@ -13,19 +13,18 @@
  */
 package io.github.tesla.gateway.netty;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.metrics.MetricsExporter;
 import io.github.tesla.gateway.netty.filter.HttpRequestFilterChain;
 import io.github.tesla.gateway.netty.filter.HttpResponseFilterChain;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -66,6 +65,12 @@ public class HttpFiltersAdapter {
 
 
   public HttpResponse clientToProxyRequest(HttpObject httpObject) {
+    try {
+      logger.info("proxy receive request, method:" + serveletRequest.getMethod() + " url:"
+          + serveletRequest.getRequestURI() + " body:"
+          + new String(serveletRequest.getRequestBody()));
+    } catch (IOException e) {
+    }
     requestStart =
         metricExporter.requestStart(serveletRequest.getMethod(), serveletRequest.getRequestURI());
     metricExporter.requestSize(serveletRequest.getNettyRequest().content().readableBytes());
@@ -83,18 +88,28 @@ public class HttpFiltersAdapter {
 
   public HttpObject proxyToClientResponse(HttpObject httpObject) {
     if (httpObject instanceof HttpResponse) {
-      HttpResponse response = (HttpResponse) httpObject;
-      try {
-        HttpResponseFilterChain.responseFilterChain().doFilter(serveletRequest, response);
-        if (response instanceof FullHttpResponse) {
-          metricExporter.responseSize(((FullHttpResponse) response).content().readableBytes());
-        }
-        return httpObject;
-      } finally {
+      HttpResponse serverResponse = (HttpResponse) httpObject;
+      logger.info("server response code:" + serverResponse.status().code() + " reason:"
+          + serverResponse.status().toString());
+      HttpResponse response =
+          HttpResponseFilterChain.responseFilterChain().doFilter(serveletRequest, serverResponse);
+      if (response != null) {
+        // 记录meritrc
+        FullHttpResponse fullHttpResponse = (FullHttpResponse) response;
+        metricExporter.responseSize(fullHttpResponse.content().readableBytes());
         metricExporter.requestEnd(serveletRequest.getMethod(), serveletRequest.getRequestURI(),
-            response.status().code(), requestStart);
+            fullHttpResponse.status().code(), requestStart);
       }
+      return response;
     } else {
+      if (httpObject instanceof FullHttpResponse) {
+        FullHttpResponse fullHttpResponse = (FullHttpResponse) httpObject;
+        logger.info("server response code:" + fullHttpResponse.status().code() + " reason:"
+            + fullHttpResponse.status().toString());
+        metricExporter.responseSize(fullHttpResponse.content().readableBytes());
+        metricExporter.requestEnd(serveletRequest.getMethod(), serveletRequest.getRequestURI(),
+            fullHttpResponse.status().code(), requestStart);
+      }
       return httpObject;
     }
   }
@@ -109,20 +124,27 @@ public class HttpFiltersAdapter {
 
   public void dynamicsRouting(HttpRequest httpRequest) {
     String actorPath = httpRequest.uri();
+    String param = null;
     int index = actorPath.indexOf("?");
     if (index > -1) {
+      param = actorPath.substring(index);
       actorPath = actorPath.substring(0, index);
     }
     Pair<String, String> route = dynamicsRouteCache.getDirectRoute(actorPath);
     if (route != null) {
       String targetPath = route.getRight();
       String targetHostAndPort = route.getLeft();
-      if (targetHostAndPort != null)
+      if (StringUtils.isNotBlank(targetHostAndPort))
         httpRequest.headers().set(HttpHeaderNames.HOST, targetHostAndPort);
-      if (StringUtils.isNotBlank(targetPath))
+      if (StringUtils.isNotBlank(targetPath)) {
+        if (param != null) {
+          targetPath = targetPath + param;
+        }
         httpRequest.setUri(targetPath);
+      }
     }
   }
+
 
   private HttpResponse createResponse(HttpResponseStatus httpResponseStatus,
       HttpRequest originalRequest) {

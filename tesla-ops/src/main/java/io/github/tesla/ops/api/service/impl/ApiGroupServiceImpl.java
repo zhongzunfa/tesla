@@ -15,16 +15,14 @@ package io.github.tesla.ops.api.service.impl;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
-
 import io.github.tesla.common.dao.ApiGroupDao;
 import io.github.tesla.common.domain.ApiGroupDO;
 import io.github.tesla.ops.api.service.ApiGroupService;
 import io.github.tesla.ops.api.vo.ApiGroupVo;
+import io.github.tesla.ops.filter.service.FilterRuleService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
 
@@ -37,6 +35,9 @@ public class ApiGroupServiceImpl implements ApiGroupService {
 
   @Autowired
   private ApiGroupDao apiGroupDao;
+
+  @Autowired
+  private FilterRuleService filterRuleService;
 
   @Override
   public PageDO<ApiGroupVo> queryList(Query query) {
@@ -89,11 +90,15 @@ public class ApiGroupServiceImpl implements ApiGroupService {
 
   @Override
   public int remove(Long id) {
+    filterRuleService.removeByGroupId(id);
     return apiGroupDao.remove(id);
   }
 
   @Override
   public int batchRemove(Long[] ids) {
+    for (Long id : ids) {
+      filterRuleService.removeByGroupId(id);
+    }
     return apiGroupDao.batchRemove(ids);
   }
 

@@ -18,13 +18,13 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.metrics.MetricsExporter;
 import io.github.tesla.gateway.netty.transmit.ThreadPoolConfiguration;
 import io.github.tesla.gateway.netty.transmit.support.DefaultHostResolver;
 import io.github.tesla.gateway.netty.transmit.support.DnsSecServerResolver;
 import io.github.tesla.gateway.netty.transmit.support.HostResolver;
 import io.github.tesla.gateway.netty.transmit.support.ServerGroup;
-import io.github.tesla.gateway.utils.ProxyUtils;
 
 /**
  * @author liushiming

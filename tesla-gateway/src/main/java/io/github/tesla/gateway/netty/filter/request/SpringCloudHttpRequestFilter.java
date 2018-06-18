@@ -14,12 +14,11 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import org.apache.commons.lang3.tuple.Pair;
-
 import io.github.tesla.common.RequestFilterTypeEnum;
 import io.github.tesla.common.domain.ApiSpringCloudDO;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.protocol.springcloud.DynamicSpringCloudClient;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -40,8 +39,10 @@ public class SpringCloudHttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(NettyHttpServletRequest servletRequest, HttpObject httpObject) {
     String uri = servletRequest.getRequestURI();
+    String param = null;
     int index = uri.indexOf("?");
     if (index > -1) {
+      param = uri.substring(index);
       uri = uri.substring(0, index);
     }
     Pair<String, ApiSpringCloudDO> springCloudPair = apiCache.getSpringCloudRoute(uri);
@@ -50,6 +51,9 @@ public class SpringCloudHttpRequestFilter extends HttpRequestFilter {
       ApiSpringCloudDO springCloudDo = springCloudPair.getRight();
       String loadbalanceHostAndPort = springCloudClient.loadBalanceCall(springCloudDo);
       final FullHttpRequest realRequest = (FullHttpRequest) httpObject;
+      if (changedPath != null) {
+        changedPath = changedPath + param;
+      }
       realRequest.setUri(changedPath);
       realRequest.headers().set(HttpHeaderNames.HOST, loadbalanceHostAndPort);
     }
