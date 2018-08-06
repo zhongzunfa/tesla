@@ -23,18 +23,24 @@ public enum ResponseFilterTypeEnum {
   /**
    * 各种限制
    */
-  JWTSetCookieResponseFilter(1), //
-  ClickjackHttpResponseFilter(2), //
-  DataMappingHttpResponseFilter(3);
+  UserDefinitionResponseFilter(0, "自定义出请求"), //
+  ClickjackHttpResponseFilter(1, "Clickjack"), //
+  XssHttpRequestFilter(2, "xss防注入攻击");
 
   private int filterOrder;
+  private String filterViewName;
 
-  ResponseFilterTypeEnum(int filterOrder) {
+  ResponseFilterTypeEnum(int filterOrder, String filterViewName) {
     this.filterOrder = filterOrder;
+    this.filterViewName = filterViewName;
   }
 
   public int order() {
     return filterOrder;
+  }
+
+  public String filterViewName() {
+    return filterViewName;
   }
 
   public static ResponseFilterTypeEnum fromTypeName(String typeName) {

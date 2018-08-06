@@ -21,8 +21,9 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.tesla.gateway.filter.common.ChannelThreadLocal;
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.netty.ActivityTracker;
-import io.github.tesla.gateway.netty.ChannelThreadLocal;
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
 import io.github.tesla.gateway.netty.HttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.ConnectionState;
@@ -30,7 +31,6 @@ import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlowStep;
 import io.github.tesla.gateway.netty.transmit.flow.FlowContext;
 import io.github.tesla.gateway.netty.transmit.flow.FullFlowContext;
 import io.github.tesla.gateway.utils.NetworkUtils;
-import io.github.tesla.gateway.utils.ProxyUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelPipeline;

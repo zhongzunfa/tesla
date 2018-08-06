@@ -5,12 +5,12 @@ import static io.github.tesla.gateway.netty.transmit.ConnectionState.AWAITING_IN
 import static io.github.tesla.gateway.netty.transmit.ConnectionState.DISCONNECTED;
 import static io.github.tesla.gateway.netty.transmit.ConnectionState.NEGOTIATING_CONNECT;
 
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
 import io.github.tesla.gateway.netty.HttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.ConnectionState;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlowStep;
 import io.github.tesla.gateway.netty.transmit.support.ProxyConnectionLogger;
-import io.github.tesla.gateway.utils.ProxyUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;

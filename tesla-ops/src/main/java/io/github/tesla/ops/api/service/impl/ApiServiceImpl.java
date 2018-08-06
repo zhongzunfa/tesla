@@ -15,13 +15,10 @@ package io.github.tesla.ops.api.service.impl;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
-
 import io.github.tesla.common.dao.ApiDao;
 import io.github.tesla.common.dao.ApiRpcDao;
 import io.github.tesla.common.dao.ApiSpringCloudDao;
@@ -31,6 +28,7 @@ import io.github.tesla.common.domain.ApiSpringCloudDO;
 import io.github.tesla.ops.api.service.ApiService;
 import io.github.tesla.ops.api.vo.ApiVo;
 import io.github.tesla.ops.common.CommonResponse;
+import io.github.tesla.ops.filter.service.FilterRuleService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
 
@@ -49,6 +47,9 @@ public class ApiServiceImpl implements ApiService {
 
   @Autowired
   private ApiSpringCloudDao springCloudDao;
+
+  @Autowired
+  private FilterRuleService filterRuleService;
 
   @Override
   public PageDO<ApiVo> queryList(Query query) {
@@ -161,6 +162,7 @@ public class ApiServiceImpl implements ApiService {
   @Override
   @Transactional
   public int remove(Long id) {
+    filterRuleService.removeByApiId(id);
     rpcDao.remove(id);
     springCloudDao.remove(id);
     apiDao.remove(id);
@@ -170,6 +172,9 @@ public class ApiServiceImpl implements ApiService {
   @Override
   @Transactional
   public int batchRemove(Long[] ids) {
+    for (Long id : ids) {
+      filterRuleService.removeByApiId(id);
+    }
     rpcDao.batchRemove(ids);
     springCloudDao.batchRemove(ids);
     apiDao.batchRemove(ids);

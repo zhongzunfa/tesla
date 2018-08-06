@@ -1,67 +1,69 @@
 var prefix = "/filter/bizrule";
-var filters = ['rateLimit', 'datamapping', 'drools'];
 $(document).ready(function() {
+  $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+    _title: function(title) {
+      if (!this.options.title) {
+        title.html("&#160;");
+      } else {
+        title.html(this.options.title);
+      }
+    }
+  }));
   pageSetUp();
   var pagefunction = function() {
-    $("button[type='submit']").each(function() {
-      $(this).click(function() {
-        var $form = $(this).parents("form");
-        var $textarea = $form.find("textarea");
-        if ($textarea.length) {
-          var editor = $textarea.data('ace').editor.ace;
-          var value = editor.getValue();
-          $form.find("[name='rule']").val(value);
+    $("#filterForm").validate({
+      rules: {
+        rule: {
+          required: true
+        },
+        name: {
+          required: true
+        },
+        describe: {
+          required: true
         }
-        $form.validate({
-          rules: {
-            rule: {
-              required: true
-            },
-            name: {
-              required: true
-            },
-            describe: {
-              required: true
-            }
-          },
-          messages: {
-            rule: {
-              required: "请输入详细规则内容"
-            },
-            name: {
-              required: "请输入规则名称"
-            },
-            describe: {
-              required: "请输入规则描述"
-            }
-          },
-          submitHandler: function(form) {
-            $(form).ajaxSubmit({
-              cache: true,
-              type: "post",
-              url: prefix + "/save",
-              data: $(form).serialize(),
-              async: false,
-              success: function() {
-                $(form).addClass('submited');
-                loadURL(prefix, $('#content'));
-              }
-            });
-          },
-          errorPlacement: function(error, element) {
-            error.insertAfter(element.parent());
+      },
+      messages: {
+        rule: {
+          required: "请选择自定义组件"
+        },
+        name: {
+          required: "请输入规则名称"
+        },
+        describe: {
+          required: "请输入规则描述"
+        }
+      },
+      submitHandler: function(form) {
+        if ($('#filterType').val() == 'UserDefinitionRequestFilter') {
+          $('#inOrOut').val('IN');
+        } else {
+          $('#inOrOut').val('OUT');
+        }
+        $(form).ajaxSubmit({
+          cache: true,
+          type: "post",
+          url: prefix + "/save",
+          data: $(form).serialize(),
+          async: false,
+          success: function() {
+            $(form).addClass('submited');
+            loadURL(prefix, $('#content'));
           }
         });
-      });
+      },
+      errorPlacement: function(error, element) {
+        error.insertAfter(element.parent());
+      }
     });
   };
-  var swiperfunction = function() {
+  var broadcastFilter = function() {
     new Swiper('#certify .swiper-container', {
       watchSlidesProgress: true,
       slidesPerView: 'auto',
       centeredSlides: true,
       loop: true,
-      loopedSlides: 3,
+      loopedSlides: 5,
       autoplay: true,
       navigation: {
         nextEl: '.swiper-button-next',
@@ -100,60 +102,81 @@ $(document).ready(function() {
       }
     });
   };
-  var choosefunction = function() {
-    try {
-      $(".choose").each(function() {
-        $(this).bind("click", function() {
-          var compnent = $(this).data("compnent");
-          for ( var index in filters) {
-            var filter = filters[index];
-            var $filterdiv = $("#" + filter);
-            if (filter == compnent) {
-              $filterdiv.show();
-              cascadingdropdown(filter)
-              if (filter == 'datamapping') {
-                $.ajax({
-                  url: prefix + "/template/freemarker",
-                  success: function(result) {
-                    $("#ruleFreeMakder").val(result);
-                    $("#ruleFreeMakder").ace({
-                      theme: 'idle_fingers',
-                      lang: 'freemarker'
-                    })
-                  }
-                });
-              } else if (filter == 'drools') {
-                $.ajax({
-                  url: prefix + "/template/drools",
-                  success: function(result) {
-                    $("#ruleDrools").val(result);
-                    $("#ruleDrools").ace({
-                      theme: 'idle_fingers',
-                      lang: 'drools'
-                    })
-                  }
-                });
-              } else {
-                $filterdiv.find("textarea").ace({
+  var selectFilter = function() {
+    var filterClassList = '';
+    $(".choose").each(function() {
+      $(this).bind("click", function() {
+        var userFilter = $(this).data("filter");
+        var filterClass = $(this).data("class");
+        var filterInOrOut = $(this).data("inorout");
+        var hasAdded = $('#' + userFilter).length;
+        if ($('#filterType').val() == 'UserDefinitionRequestFilter' && filterInOrOut == 'out') {
+          layer.alert("执行类型与所选择自定义组件不匹配，自定义组件是出类型");
+          return;
+        } else if ($('#filterType').val() == 'UserDefinitionResponseFilter' && filterInOrOut == 'in') {
+          layer.alert("执行类型与所选择自定义组件不匹配，自定义组件是入类型");
+          return;
+        }
+        if (!hasAdded) {
+          filterClassList = filterClassList + filterClass + ";";
+          $('#selectRules').val(filterClassList);
+          var data = {
+            nextTab: $('.nav-tabs').find('li').size() + 1,
+            userFilter: userFilter,
+            filterIndex: $('.nav-tabs').find('li').size(),
+            filterClass: filterClass
+          };
+          $('#dynamicsTabli').tmpl(data).appendTo('.nav-tabs');
+          $('#dynamicsTabContent').tmpl(data).appendTo('.tab-content');
+          $('.nav-tabs').find('a:last').tab('show');
+          if (userFilter == 'DataMappingRequestFilter' || userFilter == 'DataMappingHttpResponseFilter') {
+            $('#fremarkderSection').tmpl(data).appendTo('#' + userFilter);
+            $.ajax({
+              url: prefix + "/template/freemarker",
+              success: function(result) {
+                $("#ruleFreeMakder").val(result);
+                $("#ruleFreeMakder").ace({
                   theme: 'idle_fingers',
-                  lang: 'text'
+                  lang: 'freemarker'
                 })
               }
-            } else {
-              $filterdiv.hide();
-            }
+            });
+          } else if (userFilter == 'DroolsRequestFilter') {
+            $('#droolsSection').tmpl(data).appendTo('#' + userFilter);
+            $.ajax({
+              url: prefix + "/template/drools",
+              success: function(result) {
+                $("#ruleDrools").val(result);
+                $("#ruleDrools").ace({
+                  theme: 'idle_fingers',
+                  lang: 'drools'
+                })
+              }
+            });
+          } else if (userFilter == 'GroovyRequestFilter') {
+            $('#grovvySection').tmpl(data).appendTo('#' + userFilter);
+            $.ajax({
+              url: prefix + "/template/groovy",
+              success: function(result) {
+                $("#groovy").val(result);
+                $("#groovy").ace({
+                  theme: 'idle_fingers',
+                  lang: 'java'
+                })
+              }
+            });
+          } else if (userFilter == 'RatelimitRequestFilter') {
+            $('#rateLimitSection').tmpl(data).appendTo('#' + userFilter);
+          } else {
+            $('#commonSection').tmpl(data).appendTo('#' + userFilter);
           }
-        });
+        }
       });
-    } finally {
-      for ( var index in filters) {
-        $("#" + filters[index]).hide();
-      }
-    }
+    });
   }
-  var cascadingdropdown = function(filter) {
-    var group = $("#" + filter).find("div.group")[0];
-    var single = $("#" + filter).find("div.single")[0];
+  var selectUrl = function() {
+    var group = $("div.group");
+    var single = $("div.single");
     $(single).cascadingDropdown({
       selectBoxes: [{
         selector: '.apigroup',
@@ -215,37 +238,8 @@ $(document).ready(function() {
     });
   }
 
-  var valideDrools = function() {
-    $("#validdrools").bind("click", function() {
-      var $form = $(this).parents("form");
-      var $textarea = $form.find("textarea");
-      if ($textarea.length) {
-        var editor = $textarea.data('ace').editor.ace;
-        var value = editor.getValue();
-        $.ajax({
-          url: prefix + "/validate",
-          type: "POST",
-          data: {
-            "drools": value
-          },
-          success: function(result) {
-            layer.open({
-              title: '校验结果',
-              content: 'Drools脚本校验成功!'
-            });
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) {
-            layer.open({
-              title: '校验结果',
-              content: 'Drools脚本校验失败!'
-            });
-          }
-        });
-      }
-    });
-  }
   loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
-  swiperfunction();
-  choosefunction();
-  valideDrools();
+  broadcastFilter();
+  selectFilter();
+  selectUrl();
 });

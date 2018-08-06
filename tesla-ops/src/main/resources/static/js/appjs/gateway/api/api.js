@@ -28,11 +28,12 @@ function load() {
       checkbox: true
     }, {
       field: 'name',
-      title: 'API名称'
+      title: 'API名称',
+      width: 50
     }, {
       field: 'url',
       title: '请求路径'
-    },{
+    }, {
       field: 'httpMethod',
       title: '请求方法'
     }, {
@@ -54,6 +55,7 @@ function load() {
       title: '操作',
       field: 'id',
       align: 'center',
+      width: 125,
       formatter: function(value, row, index) {
         var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + row.id + '\')"><i class="fa fa-edit"></i></a> ';
         var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="javascript:void(0)" mce_href="#" title="删除" onclick="remove(\'' + row.id + '\')"><i class="fa fa-remove"></i></a> ';
@@ -65,11 +67,15 @@ function load() {
 }
 
 function detailData(id) {
+  console.log($('#routeTable').bootstrapTable('getRowByUniqueId', id));
   $('#routeTableDetail').bootstrapTable({
     data: [$('#routeTable').bootstrapTable('getRowByUniqueId', id)],
     columns: [{
       field: 'routeType',
       title: '路由模式'
+    }, {
+      field: 'instanceId',
+      title: '服务ID(SpringCloud)'
     }, {
       field: 'serviceName',
       title: '接口名'
@@ -86,19 +92,22 @@ function detailData(id) {
       field: 'dubboParamTemplate',
       title: '入参类型（dubbo）',
       formatter: function(value, row, index) {
-        var html = "<pre'>" + formatJson(value).replace(new RegExp("\"", "gm"), "'") + "</pre>";
-        return '<a href="javascript:void(0);" rel="popover" data-placement="bottom" data-content="' + html + '" data-html="true"><i class="fa fa-arrow-down"></i><strong>View</strong></a>'
+        if (value != null && value != '') {
+          var html = "<pre'>" + formatJson(value).replace(new RegExp("\"", "gm"), "'") + "</pre>";
+          return '<a href="javascript:void(0);" rel="popover" data-placement="bottom" data-content="' + html + '" data-html="true"><i class="fa fa-arrow-down"></i><strong>View</strong></a>'
+        } else {
+          return '...';
+        }
       }
     }, {
       title: '入参类型（grpc）',
       formatter: function(value, row, index) {
-        return 'protobuf'
+        return '...';
       }
     }]
   });
 }
 function view(id) {
-  detailData(id)
   $('#dialog_simple').dialog({
     autoOpen: false,
     width: 800,
@@ -112,7 +121,11 @@ function view(id) {
       click: function() {
         $(this).dialog("close");
       }
-    }]
+    }],
+    open: function(event, ui) {
+      $('#routeTableDetail').bootstrapTable('destroy');
+      detailData(id);
+    }
   }).dialog('open');
 }
 

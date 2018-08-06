@@ -67,10 +67,10 @@
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
+				data-widget-editbutton="false">
 				<header>
-					<span class="widget-icon">
-						<i class="fa fa-table"></i>
+					<span class="widget-icon"> <i class="fa fa-table"></i>
 					</span>
 					<h2>添加API组件规则</h2>
 				</header>
@@ -84,60 +84,110 @@
 											<div class="swiper-slide">
 												<div class="panel panel-darken pricing">
 													<div class="panel-heading">
-														<h3 class="panel-title">基础流量控制组件</h3>
+														<h3 class="panel-title">(入请求)RateLimitRequestFilter</h3>
 													</div>
 													<div class="panel-body no-padding text-align-center">
 														<div class="price-features">
 															<ul class="list-unstyled text-left">
-																<li>
-																	<i class="fa fa-check text-success"></i>
-																	用于限制API单位时间的访问量，避免因为访问量过大导致上游服务响应缓慢甚至停止服务
-																</li>
+																<li><i class="fa fa-check text-success"></i>
+																	用于限制API单位时间的访问量，避免因为访问量过大导致上游服务响应缓慢甚至停止服务</li>
 															</ul>
 														</div>
 													</div>
 													<div class="panel-footer text-align-center">
-														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="rateLimit" role="button"> 选择 </a>
+														<a href="javascript:void(0);"
+															class="btn btn-primary btn-block choose"
+															data-filter="RatelimitRequestFilter"
+															data-class="io.github.gateway.filter.request.RateLimitHttpRequestFilter"
+															data-inorout="in" role="button"> 选择 </a>
 													</div>
 												</div>
 											</div>
 											<div class="swiper-slide">
 												<div class="panel panel-darken pricing">
 													<div class="panel-heading">
-														<h3 class="panel-title">参数映射控制组件</h3>
+														<h3 class="panel-title">(入请求)DataMappingRequestFilter</h3>
 													</div>
 													<div class="panel-body no-padding text-align-center">
 														<div class="price-features">
 															<ul class="list-unstyled text-left">
-																<li>
-																	<i class="fa fa-check text-success"></i>
-																	用于将外部API的请求参数映射为内部API所需的请求参数，实现参数裁剪或者API标准化操作
-																</li>
+																<li><i class="fa fa-check text-success"></i>
+																	用于将外部API的请求参数映射为内部API所需的请求参数，实现参数裁剪或者API标准化操作</li>
 															</ul>
 														</div>
 													</div>
 													<div class="panel-footer text-align-center">
-														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="datamapping" role="button"> 选择 </a>
+														<a href="javascript:void(0);"
+															class="btn btn-primary btn-block choose"
+															data-filter="DataMappingRequestFilter"
+															data-class="io.github.gateway.filter.request.DataMappingRequestFilter"
+															data-inorout="in" role="button"> 选择 </a>
 													</div>
 												</div>
 											</div>
 											<div class="swiper-slide">
 												<div class="panel panel-darken pricing">
 													<div class="panel-heading">
-														<h3 class="panel-title">规则引擎组件</h3>
+														<h3 class="panel-title">(入请求)DroolsRequestFilter</h3>
 													</div>
 													<div class="panel-body no-padding text-align-center">
 														<div class="price-features">
 															<ul class="list-unstyled text-left">
-																<li>
-																	<i class="fa fa-check text-success"></i>
-																	用于根据API所传参数来动态的实现API路由的功能，实现API的编排组合功能
-																</li>
+																<li><i class="fa fa-check text-success"></i>
+																	用于根据API所传参数来动态的实现API路由的功能，实现API的编排组合功能</li>
 															</ul>
 														</div>
 													</div>
 													<div class="panel-footer text-align-center">
-														<a href="javascript:void(0);" class="btn btn-primary btn-block choose" data-compnent="drools" role="button"> 选择 </a>
+														<a href="javascript:void(0);"
+															class="btn btn-primary btn-block choose"
+															data-filter="DroolsRequestFilter"
+															data-class="io.github.gateway.filter.request.DroolsRequestFilter"
+															data-inorout="in" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">(入请求)GroovyRequestFilter</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li><i class="fa fa-check text-success"></i>
+																	用于开发人员自定义过滤规则，支持Grovvy语法及Java语法</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);"
+															class="btn btn-primary btn-block choose"
+															data-filter="GroovyRequestFilter"
+															data-class="io.github.gateway.filter.request.GroovyHttpRequestFilter"
+															data-inorout="in" role="button"> 选择 </a>
+													</div>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="panel panel-darken pricing">
+													<div class="panel-heading">
+														<h3 class="panel-title">(出请求)DataMappingResponseFilter</h3>
+													</div>
+													<div class="panel-body no-padding text-align-center">
+														<div class="price-features">
+															<ul class="list-unstyled text-left">
+																<li><i class="fa fa-check text-success"></i>
+																	用于对返回参数标准化</li>
+															</ul>
+														</div>
+													</div>
+													<div class="panel-footer text-align-center">
+														<a href="javascript:void(0);"
+															class="btn btn-primary btn-block choose"
+															data-filter="DataMappingHttpResponseFilter"
+															data-class="io.github.gateway.filter.response.DataMappingHttpResponseFilter"
+															data-inorout="out" role="button"> 选择 </a>
 													</div>
 												</div>
 											</div>
@@ -149,20 +199,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="row" id="rateLimit">
+						<div class="row">
 							<div class="col-sm-12 col-md-12 col-lg-12">
-								<form class="smart-form" id="rateLimitForm">
-									<header> 基础流量控制组件 </header>
+								<form class="smart-form" id="filterForm">
 									<fieldset>
 										<section>
-											<label class="label">名称</label>
-											<label class="input">
+											<label class="label">名称</label> <label class="input">
 												<input type="text" name="name" class="input-xs">
 											</label>
 										</section>
 										<section>
-											<label class="label">描述</label>
-											<label class="input">
+											<label class="label">描述</label> <label class="input">
 												<input type="text" name="describe" class="input-xs">
 											</label>
 										</section>
@@ -174,9 +221,9 @@
 												</select>
 											</div>
 											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
+												<span class="help-block m-b-none"> <i
+													class="fa fa-info-circle"></i> 挂载API和挂载API分组两者必选一项
+													如果两者都选，意味该规则适用于该分组下的所有API
 												</span>
 											</div>
 										</section>
@@ -185,179 +232,56 @@
 											<div class="select group" style="display: flex;">
 												<select class="apigroup">
 													<option value="">选择</option>
-												</select>
-												&nbsp;&nbsp;
-												<select class="api" disabled="disabled" name="api.id" id="apiId">
+												</select> &nbsp;&nbsp; <select class="api" disabled="disabled"
+													name="api.id" id="apiId">
 													<option value="">选择</option>
 												</select>
 											</div>
 											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
+												<span class="help-block m-b-none"> <i
+													class="fa fa-info-circle"></i> 挂载API和挂载API分组两者必选一项
+													如果两者都选，意味该规则适用于该分组下的所有API
 												</span>
 											</div>
 										</section>
 										<section>
-											<label class="label">1S调用次数不超过</label>
-											<label class="input">
-												<input name="filterType" class="form-control" type="hidden" value="RateLimitHttpRequestFilter">
-												<input type="text" name="rule" class="input-xs">
-											</label>
+											<label class="label">执行类型</label>
+											<div class="select">
+												<select name="filterType" id="filterType">
+													<option value="UserDefinitionRequestFilter">入请求执行</option>
+													<option value="UserDefinitionResponseFilter">出请求执行</option>
+												</select> <input name="inOrOut" id="inOrOut" type="hidden">
+											</div>
+											<div class="note">
+												<span class="help-block m-b-none"> <i
+													class="fa fa-info-circle"></i> 针对入请求做过滤还是对出请求执行做拦截
+												</span>
+											</div>
+										</section>
+										<section>
+											<label class="label">所选择自定义组件</label>
+											<div class="input">
+												<input type="text" name="rule" id="selectRules"
+													class="input-xs" readonly>
+											</div>
+											<div class="note">
+												<span class="help-block m-b-none"> <i
+													class="fa fa-info-circle"></i> 所选择自定义组件的全类名
+												</span>
+											</div>
+										</section>
+										<section>
+											<div>
+												<ul class="nav nav-tabs tabs-left">
+												</ul>
+												<div class="tab-content"></div>
+											</div>
 										</section>
 									</fieldset>
 									<footer>
-										<button type="button" class="btn btn-default" onclick="goback()">返回</button>
+										<button type="button" class="btn btn-default"
+											onclick="goback()">返回</button>
 										<button type="submit" class="btn btn-primary">提交</button>
-									</footer>
-								</form>
-							</div>
-						</div>
-						<div class="row" id="datamapping">
-							<div class="col-sm-12 col-md-12 col-lg-12">
-								<form class="smart-form" id="datamappingForm">
-									<header> 参数映射组件 </header>
-									<fieldset>
-										<section>
-											<label class="label">名称</label>
-											<label class="input">
-												<input type="text" name="name" class="input-xs">
-											</label>
-										</section>
-										<section>
-											<label class="label">描述</label>
-											<label class="input">
-												<input type="text" name="describe" class="input-xs">
-											</label>
-										</section>
-										<section>
-											<label class="label">挂载API分组</label>
-											<div class="select single">
-												<select class="apigroup" name="group.id" id="groupId">
-													<option value="">选择</option>
-												</select>
-											</div>
-											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
-												</span>
-											</div>
-										</section>
-										<section>
-											<label class="label">挂载API</label>
-											<div class="select group" style="display: flex;">
-												<select class="apigroup">
-													<option value="">选择</option>
-												</select>
-												&nbsp;&nbsp;
-												<select class="api" disabled="disabled" name="api.id" id="apiId">
-													<option value="">选择</option>
-												</select>
-											</div>
-											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
-												</span>
-											</div>
-										</section>
-										<section>
-											<label class="label">Freemarker参数映射模板</label>
-											<div class="widget-body">
-												<h3 class="alert alert-success">
-													Notice:<br>
-													1):${header.get(**)}从header里获取数据<br>
-													2):<a href="https://github.com/json-path/JsonPath">JsonPath</a>
-													用法：<br>
-													  &nbsp;&nbsp; A: 利用JsonPath把Body字符串解析为Json对象放在FreeMaker上下文中<br>
-													  &nbsp;&nbsp;&nbsp;&nbsp;<code><#assign json=input.path( "$")></code><br>
-													  &nbsp;&nbsp; B: 利用JsonPath表达式抽取数据<br>
-													  &nbsp;&nbsp;&nbsp;&nbsp;<code>$(json.***)</code><br>
-												</h3>
-											</div>
-											<label class="textarea textarea-resizable">
-												<input name="filterType" class="form-control" type="hidden" value="DataMappingRequestFilter">
-												<input name="rule" class="form-control" type="hidden">
-												<textarea id="ruleFreeMakder" rows="50" class="custom-scroll"></textarea>
-											</label>
-										</section>
-									</fieldset>
-									<footer>
-										<button type="button" class="btn btn-default" onclick="goback()">返回</button>
-										<button type="submit" class="btn btn-primary">提交</button>
-									</footer>
-								</form>
-							</div>
-						</div>
-						<div class="row" id="drools">
-							<div class="col-sm-12 col-md-12 col-lg-12">
-								<form class="smart-form" id="droolsForm">
-									<header> 规则引擎组件 </header>
-									<fieldset>
-										<section>
-											<label class="label">名称</label>
-											<label class="input">
-												<input type="text" name="name" class="input-xs">
-											</label>
-										</section>
-										<section>
-											<label class="label">描述</label>
-											<label class="input">
-												<input type="text" name="describe" class="input-xs">
-											</label>
-										</section>
-										<section>
-											<label class="label">挂载API分组</label>
-											<div class="select single">
-												<select class="apigroup" name="group.id" id="groupId">
-													<option value="">选择</option>
-												</select>
-											</div>
-											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
-												</span>
-											</div>
-										</section>
-										<section>
-											<label class="label">挂载API</label>
-											<div class="select group" style="display: flex;">
-												<select class="apigroup">
-													<option value="">选择</option>
-												</select>
-												&nbsp;&nbsp;
-												<select class="api" disabled="disabled" name="api.id" id="apiId">
-													<option value="">选择</option>
-												</select>
-											</div>
-											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													挂载API和挂载API分组两者必选一项 如果两者都选，意味该规则适用于该分组下的所有API
-												</span>
-											</div>
-										</section>
-										<section>
-											<label class="label">Drools规则引擎脚本</label>
-											<div class="note">
-												<span class="help-block m-b-none">
-													<i class="fa fa-info-circle"></i>
-													给出了脚本示例规范，请在示例上做修改
-												</span>
-											</div>
-											<label class="textarea textarea-resizable">
-												<input name="filterType" class="form-control" type="hidden" value="DroolsRequestFilter">
-												<input name="rule" class="form-control" type="hidden">
-												<textarea id="ruleDrools" rows="50" class="custom-scroll"></textarea>
-											</label>
-										</section>
-									</fieldset>
-									<footer>
-										<button type="button" class="btn btn-default" onclick="goback()">返回</button>
-										<button type="submit" class="btn btn-primary">提交</button>
-										<button type="button" id="validdrools" class="btn btn-primary">校验</button>
 									</footer>
 								</form>
 							</div>
@@ -368,6 +292,100 @@
 		</article>
 	</div>
 </section>
+
+
+
+<script id="fremarkderSection" type="type/x-jquery-tmpl">
+<section>
+	<label class="label">Freemarker参数映射模板</label>
+	<div class="widget-body">
+		<h3 class="alert alert-success">
+			Notice:
+			<br>
+			1):${header.get(XXX)}从header里获取数据
+			<br>
+			2):
+			<a href="https://github.com/json-path/JsonPath">JsonPath</a>
+			用法：
+			<br>
+			&nbsp;&nbsp; A: 利用JsonPath把Body字符串解析为Json对象放在FreeMaker上下文中
+			<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<code>
+				<#assign json=input.path( "$")>
+			</code>
+			<br>
+			&nbsp;&nbsp; B: 利用JsonPath表达式抽取数据
+			<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<code>$(json.XXX)</code>
+			<br>
+		</h3>
+	</div>
+	<label class="textarea textarea-resizable">
+		<input name="userFilter[{{= filterIndex}}].filterClass" type="hidden" value="{{= filterClass}}">
+		<textarea id="ruleFreeMakder" name="userFilter[{{= filterIndex}}].rule" rows="50" class="custom-scroll"></textarea>
+	</label>
+</section>
+</script>
+
+<script id="droolsSection" type="type/x-jquery-tmpl">
+<section>
+	<label class="label">Drools规则引擎脚本</label>
+	<div class="note">
+		<span class="help-block m-b-none">
+			<i class="fa fa-info-circle"></i>
+			给出了脚本示例规范，请在示例上做修改
+		</span>
+	</div>
+	<label class="textarea textarea-resizable">
+		<input name="userFilter[{{= filterIndex}}].filterClass" type="hidden" value="{{= filterClass}}">
+		<textarea id="ruleDrools" name="userFilter[{{= filterIndex}}].rule" rows="50" class="custom-scroll"></textarea>
+	</label>
+</section>
+</script>
+
+<script id="grovvySection" type="type/x-jquery-tmpl">
+<section>
+	<label class="label">Groovy规则引擎脚本</label>
+	<div class="note">
+		<span class="help-block m-b-none">
+			<i class="fa fa-info-circle"></i>
+			给出了脚本示例规范，请在示例上做修改
+		</span>
+	</div>
+	<label class="textarea textarea-resizable">
+		<input name="userFilter[{{= filterIndex}}].filterClass" type="hidden" value="{{= filterClass}}">
+		<textarea id="groovy" name="userFilter[{{= filterIndex}}].rule" rows="50" class="custom-scroll"></textarea>
+	</label>
+</section>
+</script>
+
+<script id="rateLimitSection" type="type/x-jquery-tmpl">
+<section>
+	<label class="label">1S调用次数不超过</label>
+	<label class="input">
+		<input name="userFilter[{{= filterIndex}}].filterClass" type="hidden" value="{{= filterClass}}">
+		<input type="text" name="userFilter[{{= filterIndex}}].rule" class="input-xs">
+	</label>
+</section>
+</script>
+
+<script id="commonSection" type="type/x-jquery-tmpl">
+<section>
+    <h3>无执行过滤规则</h3>
+	<input name="userFilter[{{= filterIndex}}].filterClass" type="hidden" value="{{= filterClass}}">
+</section>
+</script>
+
+
+<script id="dynamicsTabli" type="type/x-jquery-tmpl">
+<li><a href="#{{= userFilter}}" data-toggle="tab">{{= nextTab}}#{{= userFilter}}</a></li>
+</script>
+<script id="dynamicsTabContent" type="type/x-jquery-tmpl">
+<div class="tab-pane" id="{{= userFilter}}"></div>
+</script>
+
 <script type="text/javascript" src="/js/appjs/gateway/bizrule/add.js"></script>
 <script type="text/javascript">
   function goback() {

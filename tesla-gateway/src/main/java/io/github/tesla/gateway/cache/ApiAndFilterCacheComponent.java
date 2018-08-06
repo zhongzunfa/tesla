@@ -17,27 +17,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
+import io.github.tesla.common.RequestFilterTypeEnum;
+import io.github.tesla.common.ResponseFilterTypeEnum;
 import io.github.tesla.common.dao.ApiDao;
 import io.github.tesla.common.dao.ApiRpcDao;
 import io.github.tesla.common.dao.ApiSpringCloudDao;
 import io.github.tesla.common.dao.FilterDao;
+import io.github.tesla.common.dao.UserFilterDao;
 import io.github.tesla.common.domain.ApiDO;
 import io.github.tesla.common.domain.ApiGroupDO;
 import io.github.tesla.common.domain.ApiRpcDO;
 import io.github.tesla.common.domain.ApiSpringCloudDO;
 import io.github.tesla.common.domain.FilterDO;
+import io.github.tesla.common.domain.UserFilterDO;
+import io.github.tesla.gateway.filter.common.ProxyUtils;
 import io.github.tesla.gateway.netty.filter.AbstractCommonFilter;
 
 /**
@@ -63,8 +66,12 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
   private static final Map<String, Set<String>> COMMUNITY_RULE_CACHE = Maps.newConcurrentMap();
 
   // 针对特定url的过滤规则，外部的Key是Filter类型，内部的key是url
-  private static final Map<String, Map<String, Set<String>>> URL_RULE_CACHE =
+  private static final Map<String, Map<String, Set<FilterDO>>> URL_RULE_CACHE =
       Maps.newConcurrentMap();
+
+  // 针对特定url的过滤规则，外部的Key是Filter类型，内部的key是url
+  private static final Map<Pair<String, Long>, String> USER_RULE_CACHE = Maps.newConcurrentMap();
+
 
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
@@ -79,6 +86,9 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
 
   @Autowired
   private FilterDao filterDao;
+
+  @Autowired
+  private UserFilterDao userFilterDao;
 
 
   @Override
@@ -97,7 +107,7 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
       }
       List<FilterDO> filterDOs = filterDao.loadCommon();
       for (FilterDO filterDO : filterDOs) {
-        String type = filterDO.getFilterType().name();
+        String type = filterDO.getFilterType();
         String rule = filterDO.getRule();
         Set<String> rules = COMMUNITY_RULE_CACHE.get(type);
         if (rules == null) {
@@ -118,6 +128,7 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     SPRINGCLOUD_ROUTE.clear();
     COMMUNITY_RULE_CACHE.clear();
     URL_RULE_CACHE.clear();
+    USER_RULE_CACHE.clear();
   }
 
   private void doCacheFilter(ApiDO apiClone, String url, Long apiId, Long groupId) {
@@ -127,19 +138,39 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     filterDOs.addAll(filterDO1);
     filterDOs.addAll(filterDO2);
     for (FilterDO filterDO : filterDOs) {
-      String type = filterDO.getFilterType().name();
-      String rule = filterDO.getRule();
-      Map<String, Set<String>> maprules = URL_RULE_CACHE.get(type);
+      String type = filterDO.getFilterType();
+      Map<String, Set<FilterDO>> maprules = URL_RULE_CACHE.get(type);
       if (maprules == null) {
         maprules = Maps.newConcurrentMap();
         URL_RULE_CACHE.put(type, maprules);
       }
-      Set<String> rules = maprules.get(url);
+      Set<FilterDO> rules = maprules.get(url);
       if (rules == null) {
         rules = Sets.newHashSet();
         maprules.put(url, rules);
       }
-      rules.add(rule);
+      rules.add(filterDO);
+      // 用户自定义的Filter
+      RequestFilterTypeEnum userDefinitionRequestFilter =
+          RequestFilterTypeEnum.UserDefinitionRequestFilter;
+      ResponseFilterTypeEnum userDefinitionResponseFilter =
+          ResponseFilterTypeEnum.UserDefinitionResponseFilter;
+      Long filterId = filterDO.getId();
+      if (type.equals(userDefinitionRequestFilter.name())
+          || type.equals(userDefinitionResponseFilter.name())) {
+        String rule = filterDO.getRule();
+        String[] classNames = StringUtils.split(rule, UserFilterDO.DEFAULT_CLASS_SEPARATOR);
+        for (String className : classNames) {
+          UserFilterDO userFilterDo =
+              this.userFilterDao.loadByFilterIdAndClassName(filterId, className);
+          String userRule = userFilterDo.getRule();
+          if (StringUtils.isNotEmpty(userRule)) {
+            Pair<String, Long> classNameAndFilterId =
+                new ImmutablePair<String, Long>(className, filterId);
+            USER_RULE_CACHE.put(classNameAndFilterId, userRule);
+          }
+        }
+      }
     }
   }
 
@@ -170,8 +201,16 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
       } else {
         urlPath = apiClone.getPath();
       }
-      REDIRECT_ROUTE.put(url,
-          new MutablePair<String, String>(backEndHost + ":" + backEndPort, urlPath));
+      if (StringUtils.isNotBlank(backEndHost) && StringUtils.isNotBlank(backEndPort)) {
+        REDIRECT_ROUTE.put(url,
+            new MutablePair<String, String>(backEndHost + ":" + backEndPort, urlPath));
+      } else {
+        String hostAndPort = ProxyUtils.parseHostAndPort(urlPath);
+        if (!hostAndPort.equals(urlPath))
+          REDIRECT_ROUTE.put(url, new MutablePair<String, String>(hostAndPort, urlPath));
+        else
+          REDIRECT_ROUTE.put(url, new MutablePair<String, String>(null, urlPath));
+      }
     }
   }
 
@@ -189,9 +228,22 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
       readWriteLock.readLock().lock();
       Set<String> allRoutePath = REDIRECT_ROUTE.keySet();
       for (String path : allRoutePath) {
-        if (path.equals(actorPath) || pathMatcher.match(path, actorPath)) {
+        Pair<String, String> pair = REDIRECT_ROUTE.get(path);
+        String urlPath = pair.getLeft();
+        String targetPath = pair.getRight();
+        if (path.equals(actorPath)) {
           try {
-            return REDIRECT_ROUTE.get(path);
+            Pair<String, String> tempPair =
+                this.antPathMatcherTargetPath(actorPath, urlPath, targetPath);
+            return tempPair != null ? tempPair : pair;
+          } catch (Throwable e) {
+            return null;
+          }
+        } else if (pathMatcher.match(path, actorPath)) {
+          try {
+            Pair<String, String> tempPair =
+                this.antPathMatcherTargetPath(actorPath, urlPath, targetPath);
+            return tempPair != null ? tempPair : pair;
           } catch (Throwable e) {
             return null;
           }
@@ -201,8 +253,24 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     } finally {
       readWriteLock.readLock().unlock();
     }
-
   }
+
+  private Pair<String, String> antPathMatcherTargetPath(String actorPath, String urlPath,
+      String targetPath) {
+    if (pathMatcher.isPattern(targetPath)) {
+      // 首先校验下是不是匹配URL,如果匹配直接出去
+      if (pathMatcher.match(targetPath, actorPath)) {
+        return new ImmutablePair<String, String>(urlPath, actorPath);
+      } else {
+        String parentPath =
+            StringUtils.substringBeforeLast(targetPath, AntPathMatcher.DEFAULT_PATH_SEPARATOR);
+        return new ImmutablePair<String, String>(urlPath, path(parentPath) + path(actorPath));
+      }
+    }
+    return null;
+  }
+
+
 
   public ApiRpcDO getRpcRoute(String actorPath) {
     try {
@@ -216,7 +284,25 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
   public Pair<String, ApiSpringCloudDO> getSpringCloudRoute(String actorPath) {
     try {
       readWriteLock.readLock().lock();
-      return SPRINGCLOUD_ROUTE.get(actorPath);
+      Set<String> allRoutePath = SPRINGCLOUD_ROUTE.keySet();
+      for (String path : allRoutePath) {
+        if (path.equals(actorPath)) {
+          try {
+            return SPRINGCLOUD_ROUTE.get(path);
+          } catch (Throwable e) {
+            return null;
+          }
+        } else if (pathMatcher.match(path, actorPath)) {
+          try {
+            // 如果PathMatcher命中了，直接返回actorPath作为后端请求路径
+            ApiSpringCloudDO springCloudDo = SPRINGCLOUD_ROUTE.get(path).getRight();
+            return new ImmutablePair<String, ApiSpringCloudDO>(actorPath, springCloudDo);
+          } catch (Throwable e) {
+            return null;
+          }
+        }
+      }
+      return null;
     } finally {
       readWriteLock.readLock().unlock();
     }
@@ -237,12 +323,21 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
 
   }
 
+  public static String findRulePath(Set<String> paths, String actorPath) {
+    for (String path : paths) {
+      if (pathMatcher.match(path, actorPath)) {
+        return path;
+      }
+    }
+    return null;
+  }
 
-  public Map<String, Set<String>> getUrlFilterRule(AbstractCommonFilter filter) {
+
+  public Map<String, Set<FilterDO>> getUrlFilterRule(AbstractCommonFilter filter) {
     try {
       readWriteLock.readLock().lock();
       String type = filter.filterName();
-      Map<String, Set<String>> patterns = URL_RULE_CACHE.get(type);
+      Map<String, Set<FilterDO>> patterns = URL_RULE_CACHE.get(type);
       if (patterns == null) {
         patterns = Maps.newConcurrentMap();
       }
@@ -250,7 +345,23 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     } finally {
       readWriteLock.readLock().unlock();
     }
+  }
 
+  public String getUserRule(String className, Long filterId) {
+    try {
+      readWriteLock.readLock().lock();
+      Pair<String, Long> classNameAndFilterId =
+          new ImmutablePair<String, Long>(className, filterId);
+      return USER_RULE_CACHE.get(classNameAndFilterId);
+    } finally {
+      readWriteLock.readLock().unlock();
+    }
+  }
+
+  public static void main(String[] args) {
+    String parentPath =
+        StringUtils.substringBeforeLast("/user/**", AntPathMatcher.DEFAULT_PATH_SEPARATOR);
+    System.out.println(parentPath);
   }
 
 

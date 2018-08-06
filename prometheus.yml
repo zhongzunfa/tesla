@@ -10,7 +10,8 @@ scrape_configs:
       instance: prometheus
 - job_name: gateway
   static_configs:
-  - targets:
-    - 10.12.128.89:9001
+  metrics_path: /
+  scheme: http
+  - targets: ['10.12.128.89:9001']
     labels:
       instance: gateway

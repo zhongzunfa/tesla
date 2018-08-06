@@ -14,26 +14,17 @@
 package io.github.tesla.gateway.protocol.springcloud;
 
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.DiscoveryClient;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import io.github.tesla.common.domain.ApiSpringCloudDO;
 import io.github.tesla.gateway.config.eureka.EurekaClientConfigBean;
 import io.github.tesla.gateway.config.eureka.EurekaInstanceConfigBean;
 import io.github.tesla.gateway.config.eureka.InstanceInfoFactory;
+import io.github.tesla.gateway.filter.springcloud.SpringCloudDiscovery;
 
 /**
  * @author liushiming
@@ -41,17 +32,13 @@ import io.github.tesla.gateway.config.eureka.InstanceInfoFactory;
  */
 public class DynamicSpringCloudClient {
 
-  private static Logger LOG = LoggerFactory.getLogger(DynamicSpringCloudClient.class);
-
-  private final OkHttpClient okHttpClient = new OkHttpClient();
-
   private final EurekaInstanceConfigBean instanceConfig;
 
   private final EurekaClientConfigBean eurekaClientConfig;
 
-  private final int httpPort;
-
   private DiscoveryClient eurekaClient;
+
+  private final int httpPort;
 
   public DynamicSpringCloudClient(EurekaInstanceConfigBean instanceConfig,
       EurekaClientConfigBean eurekaClientConfig, int httpPort) {
@@ -68,6 +55,13 @@ public class DynamicSpringCloudClient {
       eurekaClient = new DiscoveryClient(applicationInfoManager, eurekaClientConfig);
     }
   }
+
+  public SpringCloudDiscovery getSpringCloudDiscovery() {
+    createEurekaClient();
+    return new SpringCloudDiscovery(eurekaClient, httpPort);
+  }
+
+
 
   private InstanceInfo nextServer(String serviceId) {
     this.createEurekaClient();
@@ -95,57 +89,4 @@ public class DynamicSpringCloudClient {
     return instaneinfo.getHostName() + ":" + instaneinfo.getPort();
   }
 
-  public String doHttpRemoteCall(String submitServiceId, String submitUrl, String submitType,
-      String submitJSON) {
-    final String httpUrl;
-    if (submitServiceId != null) {
-      InstanceInfo serviceInstance = this.nextServer(submitServiceId);
-      httpUrl = buildUrl(submitUrl, serviceInstance.getHostName(), serviceInstance.getPort());
-    } else {
-      httpUrl = buildUrl(submitUrl, "localhost", httpPort);
-    }
-    final Response response;
-    final Request request;
-    try {
-      if ("POST".equalsIgnoreCase(submitType) && submitJSON != null) {
-        MediaType medialType = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(medialType, submitJSON);
-        request = new Request.Builder()//
-            .url(httpUrl)//
-            .post(requestBody)//
-            .build();
-        response = okHttpClient.newCall(request).execute();
-      } else {
-        request = new Request.Builder()//
-            .url(httpUrl)//
-            .get()//
-            .build();
-        response = okHttpClient.newCall(request).execute();
-      }
-      return response.isSuccessful() ? response.body().string() : null;
-    } catch (Throwable e) {
-      LOG.error("call Remote service error,url is:" + httpUrl + ",body is:" + submitJSON, e);
-    }
-    return null;
-  }
-
-  private static Pattern HTTP_PREFIX = Pattern.compile("^https?://.*", Pattern.CASE_INSENSITIVE);
-
-  private String buildUrl(String path, String httpHost, int port) {
-    final String url;
-    if (HTTP_PREFIX.matcher(path).matches()) {
-      url = path;
-    } else {
-      if (!path.startsWith("/")) {
-        path = "/" + path;
-      }
-      url = String.format("http://%s:%s%s", httpHost, port, path);
-    }
-    return url;
-  }
-
-  public static void main(String[] args) {
-    URI uri = URI.create("http://www.baidu.com/test/test");
-    System.out.println(uri.getHost() + ":" + uri.getPort());
-  }
 }

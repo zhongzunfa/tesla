@@ -5,7 +5,7 @@
 
 	<select id="get" resultType="io.github.tesla.common.domain.FilterDO">
 		select
-		`id`,`name`,`describe`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
+		`id`,`name`,`describe`,`in_or_out`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
 		where id = #{value}
 	</select>
@@ -13,21 +13,21 @@
 
 	<select id="loadByApiId" resultType="io.github.tesla.common.domain.FilterDO">
 		select
-		`id`,`name`,`describe`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
+		`id`,`name`,`describe`,`in_or_out`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
 		where api_id = #{apiId}
 	</select>
 
 	<select id="loadByGroupId" resultType="io.github.tesla.common.domain.FilterDO">
 		select
-		`id`,`name`,`describe`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
+		`id`,`name`,`describe`,`in_or_out`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
 		where group_id = #{groupId}
 	</select>
 
 	<select id="loadCommon" resultType="io.github.tesla.common.domain.FilterDO">
 		select
-		`id`,`name`,`describe`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
+		`id`,`name`,`describe`,`in_or_out`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
 		where (api_id = null or api_id = 0) and (group_id =
 		null or group_id=0)
@@ -35,7 +35,7 @@
 
 	<select id="list" resultType="io.github.tesla.common.domain.FilterDO">
 		select
-		`id`,`name`,`describe`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
+		`id`,`name`,`describe`,`filter_type`,`in_or_out`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
 		<where>
 			<if test="id != null and id != ''"> and `id` = #{id} </if>
@@ -82,6 +82,7 @@
 		(
 		`name`,
 		`describe`,
+		`in_or_out`,
 		`filter_type`,
 		`rule`,
 		`api_id`,
@@ -93,6 +94,7 @@
 		(
 		#{name},
 		#{describe},
+		#{inOrOut},
 		#{filterType},
 		#{rule},
 		#{apiId},
@@ -110,6 +112,7 @@
 			<if test="groupId != null and groupId != ''"> `group_id` = #{groupId},</if>
 			<if test="name != null and name != ''"> `name` = #{name},</if>
 			<if test="describe != null and describe != ''"> `describe` = #{describe},</if>
+			<if test="rule != null and rule != ''"> `rule` = #{rule},</if>
 			`gmt_modified`=sysdate()
 		</set>
 		where id = #{id}

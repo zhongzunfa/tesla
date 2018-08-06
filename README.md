@@ -28,7 +28,7 @@
  * mvn打包及打镜像
  
  ```
-   mvn clean package
+ mvn clean package
  ```
  
  * 在根目录下运行,成功如下图

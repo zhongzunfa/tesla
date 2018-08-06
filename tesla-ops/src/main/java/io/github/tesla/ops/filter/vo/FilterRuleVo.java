@@ -15,10 +15,12 @@ package io.github.tesla.ops.filter.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
 import io.github.tesla.common.RequestFilterTypeEnum;
+import io.github.tesla.common.ResponseFilterTypeEnum;
 import io.github.tesla.common.domain.FilterDO;
 import io.github.tesla.ops.api.vo.ApiGroupVo;
 import io.github.tesla.ops.api.vo.ApiVo;
@@ -36,13 +38,17 @@ public class FilterRuleVo implements Serializable {
 
   private String describe;
 
-  private RequestFilterTypeEnum filterType;
+  private String inOrOut;
+
+  private String filterType;
 
   private String rule;
 
   private ApiVo api;
 
   private ApiGroupVo group;
+
+  private List<UserFilterRuleVo> userFilter;
 
   private Timestamp gmtCreate;
 
@@ -64,31 +70,65 @@ public class FilterRuleVo implements Serializable {
     this.describe = describe;
   }
 
-  public String getFilterName() {
-    return filterType.filterViewName();
+
+  public String getInOrOut() {
+    return inOrOut;
   }
 
-  public Integer getFilterOrder() {
-    return filterType.order();
+  public void setInOrOut(String inOrOut) {
+    this.inOrOut = inOrOut;
   }
 
-  public RequestFilterTypeEnum getFilterType() {
+
+  public String getFilterType() {
     return filterType;
   }
 
-  public void setFilterType(RequestFilterTypeEnum filterType) {
+  public void setFilterType(String filterType) {
     this.filterType = filterType;
   }
 
-  public void setFilterType(String filterType) {
-    RequestFilterTypeEnum type = RequestFilterTypeEnum.fromTypeName(filterType);
-    if (type != null) {
-      this.filterType = type;
+
+  public String getFilterName() {
+    if ("IN".equals(inOrOut)) {
+      RequestFilterTypeEnum requestType = RequestFilterTypeEnum.fromTypeName(filterType);
+      if (requestType != null) {
+        return requestType.filterViewName();
+      } else {
+        return null;
+      }
+    } else if ("OUT".equals(inOrOut)) {
+      ResponseFilterTypeEnum responseType = ResponseFilterTypeEnum.fromTypeName(filterType);
+      if (responseType != null) {
+        return responseType.filterViewName();
+      } else {
+        return null;
+      }
     } else {
-      throw new java.lang.IllegalArgumentException(
-          "no type found in defination,[" + filterType + "]");
+      return null;
     }
   }
+
+  public Integer getFilterOrder() {
+    if ("IN".equals(inOrOut)) {
+      RequestFilterTypeEnum requestType = RequestFilterTypeEnum.fromTypeName(filterType);
+      if (requestType != null) {
+        return requestType.order();
+      } else {
+        return null;
+      }
+    } else if ("OUT".equals(inOrOut)) {
+      ResponseFilterTypeEnum responseType = ResponseFilterTypeEnum.fromTypeName(filterType);
+      if (responseType != null) {
+        return responseType.order();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
 
   public Long getId() {
     return id;
@@ -138,6 +178,15 @@ public class FilterRuleVo implements Serializable {
     this.gmtModified = gmtModified;
   }
 
+
+  public List<UserFilterRuleVo> getUserFilter() {
+    return userFilter;
+  }
+
+  public void setUserFilter(List<UserFilterRuleVo> userFilter) {
+    this.userFilter = userFilter;
+  }
+
   public static FilterRuleVo buildFilterRuleVo(FilterDO filterDo, ApiVo apiVo, ApiGroupVo groupVo) {
     FilterRuleVo ruleVo = new FilterRuleVo();
     BeanUtils.copyProperties(filterDo, ruleVo);
@@ -157,6 +206,5 @@ public class FilterRuleVo implements Serializable {
       ruleDO.setGroupId(filterVo.getGroup().getId());
     return ruleDO;
   }
-
 
 }

@@ -48,4 +48,21 @@ public class UserController {
     return user;
   }
 
+  @RequestMapping(value = "goods", method = RequestMethod.POST)
+  public User postUser() {
+    User user = new User();
+    user.setIdNo("1233");
+    user.setMobile("13422990332");
+    user.setName("Yang Tao");
+    return user;
+  }
+
+  @RequestMapping(value = "customers", method = RequestMethod.POST)
+  public User postCustomers() {
+    User user = new User();
+    user.setIdNo("1233");
+    user.setMobile("13422990332");
+    user.setName("Yang Tao");
+    return user;
+  }
 }

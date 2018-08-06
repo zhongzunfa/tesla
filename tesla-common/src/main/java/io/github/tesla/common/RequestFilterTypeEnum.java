@@ -30,10 +30,7 @@ public enum RequestFilterTypeEnum {
   BlackURLHttpRequestFilter(4, "URL黑名单组件"), // URL路径黑名单拦截
   BlackIpHttpRequesFilter(5, "IP黑名单组件"), // IP黑名单
   SecurityScannerHttpRequestFilter(6, "防扫描组件"), // 扫描
-  JWTRequestFilter(6, "JWT验证"), // JWT验证
-  RateLimitHttpRequestFilter(7, "限流组件"), // 限流
-  DroolsRequestFilter(8, "规则引擎组件"), // 规则转换
-  DataMappingRequestFilter(9, "参数映射组件"), // 数据格式转化Mapping
+  UserDefinitionRequestFilter(7, "自定义入请求"), // JWT验证
 
 
 

@@ -1,12 +1,14 @@
+app:
+  id: osg
 spring:
   application:
-    name: tesla-grpc
+    name: tesla-gateway
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://tesla-mysql:3306/gateway?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123
+    url: ${TESLA_MYSQL_JDBC_URL}
+    username: ${TESLA_MYSQL_USERNAME}
+    password: ${TESLA_MYSQL_PASSWORD}
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -22,18 +24,15 @@ spring:
     filters: stat,wall,slf4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 server:
-  port: 9000
+  port: ${TESLA_SERVER_PORT:8080}
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath*:META-INF/mybatis/**/*Mapper.xml
-saluki:
-  grpc:
-    registryAddress: consul:8500
 dubbo:
-  registryAddress: zookeeper://zookeeper:2181
+  registryAddress: ${DUBBO_REGISTRY_ADDRESS}
 eureka:
   client:
     registerWithEureka: false
     serviceUrl:
-      defaultZone: http://eureka.springcloud.cn/eureka/
+      defaultZone: ${SPRINGCLOUD_REGISTRY_ADDRESS}

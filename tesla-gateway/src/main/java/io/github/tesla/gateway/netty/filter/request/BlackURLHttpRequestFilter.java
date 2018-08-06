@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.tesla.common.RequestFilterTypeEnum;
-import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
+import io.github.tesla.gateway.filter.servlet.NettyHttpServletRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;

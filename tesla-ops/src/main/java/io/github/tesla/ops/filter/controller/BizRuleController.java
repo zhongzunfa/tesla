@@ -19,10 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderError;
@@ -37,7 +35,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import io.github.tesla.ops.common.Log;
 import io.github.tesla.ops.filter.vo.FilterRuleVo;
 import io.github.tesla.ops.system.domain.PageDO;
@@ -74,8 +71,10 @@ public class BizRuleController extends ShareRuleController {
     String path = "/META-INF/config/rules/";
     if ("drools".equals(template)) {
       path = path + "drools.drl";
-    } else {
+    } else if ("freemarker".equals(template)) {
       path = path + "freemarker.ftl";
+    } else if ("groovy".equals(template)) {
+      path = path + "groovy.groovy";
     }
     InputStream is = BizRuleController.class.getResourceAsStream(path);
     BufferedReader reader = new BufferedReader(new InputStreamReader(is));

@@ -15,7 +15,6 @@ package io.github.tesla.ops.filter.service;
 
 import java.util.List;
 import java.util.Map;
-
 import io.github.tesla.ops.filter.vo.FilterRuleVo;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
@@ -39,6 +38,10 @@ public interface FilterRuleService {
   int update(FilterRuleVo ruleDo);
 
   int remove(Long ruleId);
+
+  int removeByApiId(Long apiId);
+
+  int removeByGroupId(Long groupId);
 
   int batchRemove(Long[] ruleIds);
 }
