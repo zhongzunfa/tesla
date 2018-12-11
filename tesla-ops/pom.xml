@@ -82,11 +82,11 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 			<version>5.0.7</version>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>

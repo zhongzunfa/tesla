@@ -16,9 +16,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: ${TESLA_MYSQL_JDBC_URL}
-    username: ${TESLA_MYSQL_USERNAME}
-    password: ${TESLA_MYSQL_PASSWORD}
+    url: jdbc:mysql://tesla-mysql:3306/gateway?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123
     initialSize: 1
     minIdle: 3
     maxActive: 20
